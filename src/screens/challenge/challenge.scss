@@ -1,0 +1,22 @@
+.row {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+}
+.challenge-card {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: 30px;
+    font-weight: 500;
+    &:hover {
+        cursor: pointer;
+    }
+}

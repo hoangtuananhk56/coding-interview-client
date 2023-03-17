@@ -1,27 +1,24 @@
-import {Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input } from 'antd';
-import './login.scss';
+import './register.scss';
 import logo from '../../../assets/images/logo.png'
 import homeright from '../../../assets/images/homeright.jpg'
-
-const Login = () => {
-  const navigate = useNavigate()
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    navigate("/")
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-  console.log(process.env.REACT_APP_API_ENDPOINT, 111);
+const onFinish = (values) => {
+  console.log('Success:', values);
+};
+const onFinishFailed = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+const Register = () => {
+  const navigate = useNavigate();
   return (
     <>
-      <div className="login">
-        <div className="login-form">
-          <div className="login-logo">
+      <div className="register">
+        <div className="register-form">
+          <div className="register-logo">
             <img src={logo} />
           </div>
-          <div className="login-title">
+          <div className="register-title">
             WELCOME TO BAST VIETNAM
           </div>
           <div className="input-form">
@@ -68,6 +65,18 @@ const Login = () => {
               >
                 <Input.Password />
               </Form.Item>
+              <Form.Item
+                label="Re-Password"
+                name="re-password"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your re-password!',
+                  },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
 
               <Form.Item
                 wrapperCol={{
@@ -75,11 +84,11 @@ const Login = () => {
                   span: 16,
                 }}
               >
-                <Button htmlType="submit" style={{marginRight: 10, backgroundColor: '#4caf50', color:'white'}}>
-                  Submit
-                </Button>
-                <Button style={{backgroundColor:'#2196f3', color:'white'}} onClick={() => navigate("/auth/register")}>
+                <Button type="primary" htmlType="submit">
                   Register
+                </Button>
+                <Button type="default" style={{ marginLeft: 10 }} onClick={() => navigate('/auth/login')}>
+                  Cancle
                 </Button>
               </Form.Item>
             </Form>
@@ -89,9 +98,10 @@ const Login = () => {
         <div className="right-home">
           <img src={homeright} />
         </div>
+
       </div>
     </>
   )
 };
 
-export default Login;
+export default Register;

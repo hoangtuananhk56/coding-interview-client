@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import './Layout.scss'
-const logo = './logo.png'
+import logo from '../../assets/images/logo.png'
 function getItem(label, key, icon, tolink, children) {
   return {
     label,
