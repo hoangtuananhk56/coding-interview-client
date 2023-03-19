@@ -8,7 +8,7 @@ import Challenge from "./screens/challenge/Challenge";
 import SQL from "./screens/challenge/challengeSql/Sql";
 import Algorithm from "./screens/challenge/challengeAlgorithm/Algorithm";
 import Knowledge from "./screens/challenge/challengeKnowledge/Knowledge";
-import Exam from "./screens/exam/Exam";
+import Testing from "./screens/testing/Testing";
 import NoPage from "./screens/404/404";
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
           <Route path="challenge/sql" element={<SQL />} />
           <Route path="challenge/algorithm" element={<Algorithm />} />
           <Route path="challenge/knowledge" element={<Knowledge />} />
-          <Route path="exam" element={<Exam />} />
+          <Route path="test" element={<Testing />} />
         </Route>
       </Routes>
     </BrowserRouter>

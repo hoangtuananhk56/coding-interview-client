@@ -1,6 +1,6 @@
-import { Input, Button, Form, InputNumber, Popconfirm, Table, Typography } from 'antd';
-import './home.scss';
+import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import { useState } from 'react';
+import './home.scss';
 const { Search } = Input;
 const originData = [];
 for (let i = 0; i < 100; i++) {
@@ -121,7 +121,7 @@ const Home = () => {
               Save
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+              <p>Cancel</p>
             </Popconfirm>
           </span>
         ) : (

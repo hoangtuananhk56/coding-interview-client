@@ -1,0 +1,44 @@
+.title-1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 60px;
+ 
+    .knowledge-search {
+        display: flex;
+        align-items: center;
+        justify-content:space-between;
+        width: 100%;
+        .title-icon {
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 400;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .right-search {
+            display: flex;
+            margin-right: 30px;
+            .search-input {
+                margin-right: 5px;
+            }
+            .create-btn {
+                background-color: #43A047;
+                border-radius: 5;
+                border:1px solid #BABABA;
+                color: white;
+                &:hover {
+                    color: white;
+                }
+            }
+            
+        }
+    }
+}
+.candidate-table {
+    width: 100%;
+    height: auto;
+}

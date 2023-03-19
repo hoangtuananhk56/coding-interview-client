@@ -1,11 +1,7 @@
-import { Button, Form, Input, Pagination, Popconfirm, Table, Typography } from 'antd';
-import { useState } from 'react';
+import { Button, Input, Pagination } from 'antd';
 import { useNavigate } from "react-router-dom";
-import {
-  LeftOutlined,
-} from '@ant-design/icons';
-import './algorithm.scss';
-import TestingItem from '../../../components/exam/examItem';
+import ChallengeItem from '../../components/challenge/ChallengeItem';
+import './testing.scss';
 const { Search } = Input;
 const originData = [];
 
@@ -13,7 +9,7 @@ for (let i = 0; i < 17; i++) {
   originData.push({
     key: i,
     id: i,
-    title: "Algorithm "+i,
+    title: "Testing "+i,
     isEdit: true,
     isEmail: true,
     isDelete: true,
@@ -21,18 +17,16 @@ for (let i = 0; i < 17; i++) {
 } 
 
 
-const Algorithm = () => {
+const Testing = () => {
   const navigate = useNavigate();
   const onSearch = (value) => console.log(value);
   return (
     <div className="home">
       <div className="title-1">
-        <div className='algorithm-search'>
-          <div className='title-icon' title='Back to prepage' onClick={() => {
-              navigate("/challenge")
-          }}>
-            <LeftOutlined />
-            Algorithm
+        <div className='exam-search'>
+          <div className='title-icon' title='Back to prepage'>
+            {/* <LeftOutlined />
+            Testing */}
           </div>
           <div className='right-search'>
             <Search 
@@ -51,7 +45,7 @@ const Algorithm = () => {
         {
           originData && originData.map(e => {
             return (
-              <TestingItem id={e.id} title={e.title} isEdit={e.isEdit} isEmail={e.isEmail} isDelete={e.isDelete}/>
+              <ChallengeItem id={e.id} title={e.title} isEdit={e.isEdit} isEmail={e.isEmail} isDelete={e.isDelete}/>
             )
           })
         }
@@ -77,4 +71,4 @@ const Algorithm = () => {
   );
 };
 
-export default Algorithm;
+export default Testing;

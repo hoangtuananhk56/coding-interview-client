@@ -19,7 +19,7 @@ function getItem(label, key, icon, tolink, children) {
 const items = [
   getItem('Candidates', 0, <PieChartOutlined />, '/'),
   getItem('Challenges', 1, <DesktopOutlined />, '/challenge'),
-  getItem('Exams', 2, <ContainerOutlined />, '/exam',)
+  getItem('Testings', 2, <ContainerOutlined />, '/test',)
 ];
 
 const Layout = () => {

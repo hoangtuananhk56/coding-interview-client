@@ -1,10 +1,11 @@
+import { Button, Form, Input } from 'antd';
 import { useNavigate } from "react-router-dom";
-import { Button, Checkbox, Form, Input } from 'antd';
 import './register.scss';
-import logo from '../../../assets/images/logo.png'
-import homeright from '../../../assets/images/homeright.jpg'
+import homeright from '../../../assets/images/homeright.jpg';
+import logo from '../../../assets/images/logo.png';
+import authApi from '../../../http/authAPI'
 const onFinish = (values) => {
-  console.log('Success:', values);
+  authApi.userRegister(values)
 };
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
@@ -16,7 +17,7 @@ const Register = () => {
       <div className="register">
         <div className="register-form">
           <div className="register-logo">
-            <img src={logo} />
+            <img src={logo} alt="logo"/>
           </div>
           <div className="register-title">
             WELCOME TO BAST VIETNAM
@@ -96,7 +97,7 @@ const Register = () => {
         </div>
 
         <div className="right-home">
-          <img src={homeright} />
+          <img src={homeright} alt="home-rght"/>
         </div>
 
       </div>
