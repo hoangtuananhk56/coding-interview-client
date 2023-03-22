@@ -1,0 +1,106 @@
+.exam {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 70px);
+    display: flex;
+    
+    .left-exam {
+        width: 65%;
+        border-right: 1px solid #abc123;
+        .back-title {
+            display: flex;
+            margin-left: 30px;
+            margin-top: 10px;
+            font-size: 24px;
+            align-items: center;
+            font-weight: 600;
+        }
+        .input-1 {
+            width: 400px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 400px;
+        }
+        .input-2 {
+            width: 720px;
+            margin-right: 25px;
+            margin-left: 5px;
+        }
+        .testcase-list {
+            width: 100%;
+            height: auto;
+        }
+        .icon {
+            width: 40px;
+            margin-right: 5px;
+            text-align: center;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+        .left-exam-body {
+            height: calc(100% - 60px);
+            width: 100%;
+            overflow: auto;
+        }
+
+        .left-exam-footer {
+            height: 60xp;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+    .right-exam {
+        width: 35%;
+        .header-list {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 24px;
+            padding: 0 25px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        .challenge-list {
+            width: 100%;
+            height: auto;
+        }
+        .challenge-list-footer {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+.align-center {
+    display: flex;
+    align-items: center;
+}
+.title {
+    width: 100px;
+    align-items: center;
+    display: flex;
+    height: 40px;
+    margin-left: 30px;
+}
+.create-btn-exam {
+    margin-top: 20px;
+    margin-right: 25px;
+    background-color: #43A047;
+    border-radius: 5;
+    border:1px solid #BABABA;
+    color: white;
+    &:hover {
+        color: white;
+    }
+}

@@ -1,6 +1,6 @@
 import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
 import { useState } from 'react';
-import './home.scss';
+import './candidate.scss';
 const { Search } = Input;
 const originData = [];
 for (let i = 0; i < 100; i++) {
@@ -46,7 +46,7 @@ const EditableCell = ({
   );
 };
 
-const Home = () => {
+const Candidate = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState(originData);
   const [editingKey, setEditingKey] = useState('');
@@ -182,4 +182,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Candidate;
