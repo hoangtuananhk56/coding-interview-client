@@ -28,7 +28,46 @@
   }
 }
 .candidate-table {
-  // margin: 0 30px;
-  width: 100%;
-  height: auto;
+  height: 490px;
+  overflow-x: hidden;
+  text-align: center;
+  padding: 0 30px 0 30px;
+  .row {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: #D9D9D9;
+    height: 40px;
+    border-radius: 5px;
+    .ids {
+      width: 5%;
+    }
+    .name {
+      width: 15%;
+    }
+    .email {
+      width: 15%;
+    }
+    .create_at {
+      width: 10%;
+    }
+    .update_at {
+      width: 10%;
+    }
+    .challenge {
+      width: 10%;
+    }
+    .resolved {
+      width: 5%;
+    }
+    .point {
+      width: 5%;
+    }
+    .phone {
+      width: 10%;
+    }
+    .action {
+      width: 10%;
+    }
+  }
 }

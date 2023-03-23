@@ -1,157 +1,58 @@
-import { Button, Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd';
+import { Button, Form, Input, Pagination, Modal, Select, Typography } from 'antd';
 import { useState } from 'react';
 import './candidate.scss';
+import CandidateItem from '../../components/candidate/CandidateItem';
 const { Search } = Input;
 const originData = [];
-for (let i = 0; i < 100; i++) {
+const comments = []
+for (let i = 0; i < 10; i++) {
   originData.push({
-    key: i.toString(),
-    name: `Edward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
+    key: i,
+    id: i,
+    create_at: 123123213,
+    update_at: 23234234,
+    name: "Phillip " + i,
+    email: `anhht ${i}@gmail.com`,
+    challenge: "challenge " + i,
+    resolved: "resolved " + i,
+    point: "point " + i,
+    phone: "0123456789"
   });
+  comments.push({
+    author: "David",
+    comment: "Good"
+  })
 }
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
 const Candidate = () => {
-  const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState('');
-  const isEditing = (record) => record.key === editingKey;
+  const [isModalOpenComment, setIsModalOpenComment] = useState(false);
+  const [isModalOpenEmail, setIsModalOpenEmail] = useState(false);
+  const [isModalOpenCreation, setIsModalOpenCreation] = useState(false);
   const onSearch = (value) => console.log(value);
-  const edit = (record) => {
-    form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
-      ...record,
-    });
-    setEditingKey(record.key);
+  const onShowModalComment = () => {
+    setIsModalOpenComment(true);
   };
-  const cancel = () => {
-    setEditingKey('');
+  const handleOk = () => {
+    setIsModalOpenComment(false);
+    setIsModalOpenEmail(false);
+    setIsModalOpenCreation(false);
   };
-  const save = async (key) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        setData(newData);
-        setEditingKey('');
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
-    }
+  const handleCancel = () => {
+    setIsModalOpenComment(false);
+    setIsModalOpenEmail(false);
+    setIsModalOpenCreation(false);
   };
-  const columns = [
-    {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
-      editable: true,
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      render: (_, record) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Typography.Link
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <p>Cancel</p>
-            </Popconfirm>
-          </span>
-        ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
-          </Typography.Link>
-        );
-      },
-    },
-  ];
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
+  const onShowModalEmail = () => {
+    setIsModalOpenEmail(true);
+  };
+  const onShowModalCreate = () => {
+    setIsModalOpenCreation(true);
+  };
+  const handleChange = () => console.log("handleChange")
   return (
     <div className="home">
       <div className="title-1">
         <div className='home-search'>
-          <Search 
+          <Search
             className='search-input'
             placeholder="Enter Candidates"
             onSearch={onSearch}
@@ -159,26 +60,112 @@ const Candidate = () => {
               width: 200,
             }}
           />
-          <Button prefixCls='create-btn'>CREATE</Button>
+          <Button prefixCls='create-btn' onClick={onShowModalCreate}>CREATE</Button>
         </div>
       </div>
-        <Table 
-          className='candidate-table'
-          components={{
-            body: {
-              cell: EditableCell,
-            },
-          }}
-          bordered
-          dataSource={data}
-          columns={mergedColumns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: cancel,
-          }}
-          scroll={{y: 350, x: 0}}
-        /> 
+      <div className='candidate-table'>
+        <div className='row'>
+          <div className='ids'>IDs</div>
+          <div className='name'>Name</div>
+          <div className='email'>Email</div>
+          <div className='create_at'>CreateAt</div>
+          <div className='update_at'>UpdateAt</div>
+          <div className='challenge'>Challenge</div>
+          <div className='resolved'>Resolved</div>
+          <div className='point'>Point</div>
+          <div className='phone'>Phone</div>
+          <div className='action'>Action</div>
+        </div>
+        {
+          originData && originData.map(e => {
+            return (
+              <CandidateItem id={e.id} name={e.name} email={e.email} create_at={e.create_at} update_at={e.update_at} challenge={e.challenge} resolved={e.resolved} point={e.point} phone={e.phone} onShowModalComment={onShowModalComment} onShowModalEmail={onShowModalEmail} />
+            )
+          })
+        }
+      </div>
+      <Pagination
+        className="custom-pagination"
+        // locale={{ items_per_page: '' }}
+        total={originData.length}
+        defaultPageSize={5}
+        showLessItems={true}
+        pageSizeOptions={['5', '10', '15']}
+        showSizeChanger
+        showTotal={(total, range) => `${range[0] >= 0 ? range[0] : 0}-${range[1] >= 0 ? range[1] : 0} per ${total}`}
+        onChange={(page, size) => {
+          // setPageIndex(page)
+          // setPageSize(size)
+          // setIsShowLess(() => {
+          //   return page > 4
+          // })
+        }}
+      />
+      <Modal title="Comment Modal" open={isModalOpenComment} onOk={handleOk} onCancel={handleCancel}>
+        <div style={{ maxHeight: 300, overflow: 'auto' }}>
+          {comments && comments.map(e => {
+            return (
+              <div className='row'>
+                <p>{e.author} : </p>
+                <p>{e.comment}</p>
+              </div>
+            )
+          })}
+        </div>
+        <Input type='text' placeholder='comment...' />
+      </Modal>
+      <Modal title="Candidate Invitation" open={isModalOpenEmail} onOk={handleOk} onCancel={handleCancel}>
+        <div className='row'>
+          <div className='title'>Challenge</div>
+          <Select
+            defaultValue="junior"
+            style={{
+              width: 120,
+            }}
+            onChange={handleChange}
+            options={[
+              {
+                value: 'junior',
+                label: 'Junior',
+              },
+              {
+                value: 'middle',
+                label: 'Midlle',
+              },
+              {
+                value: 'senior',
+                label: 'Senior',
+              },
+            ]}
+          />
+        </div>
+        <div className='row'>
+          <div className='title'>
+            Email
+          </div>
+          <Input type='text' placeholder={`Candidate's email`} />
+        </div>
+      </Modal>
+      <Modal title="Candidate Creation" open={isModalOpenCreation} onOk={handleOk} onCancel={handleCancel}>
+        <div className='row'>
+          <div className='title'>Name</div>
+          <Input type='text'/>
+        </div>
+        <div className='row'>
+          <div className='title'> Email </div>
+          <Input type='text'/>
+        </div>
+        <div className='row'>
+          <div className='title'> Challenge </div>
+          <Input type='text' />
+        </div>
+        <div className='row'>
+          <div className='title'> Phone </div>
+          <Input type='text' />
+        </div>
+      </Modal>
     </div>
+
   );
 };
 

@@ -1,0 +1,48 @@
+.candidate-item-component {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #eaeaec;
+  margin: 2px 0;
+  border-radius: 0.5rem;
+  color: #0e141e;
+  .ids {
+    width: 5%;
+  }
+  .name {
+    width: 15%;
+  }
+  .email {
+    width: 15%;
+  }
+  .create_at {
+    width: 10%;
+  }
+  .update_at {
+    width: 10%;
+  }
+  .challenge {
+    width: 10%;
+  }
+  .resolved {
+    width: 5%;
+  }
+  .point {
+    width: 5%;
+  }
+  .phone {
+    width: 10%;
+  }
+  .action {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .icon {
+        width: 5%;
+        margin: 10px;
+        font-size: 24px;
+    }
+  }
+}

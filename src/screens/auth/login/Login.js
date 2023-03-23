@@ -4,18 +4,31 @@ import './login.scss';
 import logo from '../../../assets/images/logo.png'
 import homeright from '../../../assets/images/homeright.jpg'
 import authApi from '../../../http/authAPI'
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate()
-  const onLogin = (values) => {
-    console.log('Success:', values);
-    authApi.userLogin(values)
-    navigate("/")
+  const [message, setMessage] = useState();
+  const onLogin = async (values) => {
+    console.log(values, 111)
+   var a =  await authApi.userLogin(values)
+    .then(res => {
+      console.log(res)
+        //Save localstorage accessToken
+        localStorage.setItem('accessToken', res.accessToken)
+        localStorage.setItem('name', res.name)
+        navigate("/")
+    }).catch(err => {
+      setMessage(err.response.data.message)
+      console.log(err.response.data.message);
+
+
+    })
+    console.log(a);
   };
   const onLoginFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  console.log(process.env.REACT_APP_API_ENDPOINT, 111);
   return (
     <>
       <div className="login">
@@ -70,7 +83,7 @@ const Login = () => {
               >
                 <Input.Password />
               </Form.Item>
-
+                 <p style={{marginLeft: 170, color:'red'}}>{message}</p>
               <Form.Item
                 wrapperCol={{
                   offset: 8,
