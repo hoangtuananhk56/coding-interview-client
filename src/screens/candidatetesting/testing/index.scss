@@ -1,0 +1,54 @@
+.challenge-list-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  .challenge-list-page-menu-bar {
+    width: 5vw;
+    height: calc(100vh - 60px);
+    // background-color: aqua;
+    border-right: 1px solid #d6d6d6;
+  }
+  .challenge-list-page-left {
+    width: 40vw;
+    height: calc(100vh - 60px);
+    overflow: auto;
+    border-right: 1px solid #d6d6d6;
+    .challenge-list-page-left-title {
+      height: 40px;
+      font-size: 18px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      margin: 10px;
+    }
+    .challenge-list-page-left-content {
+      font-size: 14px;
+      height: auto;
+      margin: 10px;
+    }
+  }
+  .challenge-list-page-right {
+    width: 55vw;
+    height: calc(100vh - 60px);
+    overflow: auto;
+    // background-color: rgb(0, 122, 81);
+  }
+}
+
+.challenge-list-page-menu-bar-item {
+  background-color: #d6d6d6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  border: 1px solid #FFF;
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin: 2px 5px;
+  &:hover {
+    cursor: pointer;
+    background-color: #43A047;
+    color: white;
+  }
+}

@@ -11,6 +11,12 @@ import Knowledge from "./screens/challenge/challengeKnowledge/Knowledge";
 import Testing from "./screens/testing/Testing";
 import Exam from "./screens/testing/exam/Exam";
 import NoPage from "./screens/404/404";
+import Thank from "./screens/candidatetesting/thank/Thank";
+import Welcome from "./screens/candidatetesting/welcome/Welcome";
+import Challengelist from "./screens/candidatetesting/challengelist/Challengelist";
+import CandidateTesting from "./screens/candidatetesting/testing/CandidateTesting";
+import CandidateTesing from "./screens/candidatetesting/Candidatetesting";
+
 
 export default function App() {
   return (
@@ -20,6 +26,8 @@ export default function App() {
           {/* <Route index element={<Login />} /> */}
           <Route path="auth/register" element={<Register />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="thank" element={<Thank />} />
+          <Route path="welcome" element={<Welcome />} />
           {/* </Route> */}
         <Route path="/" element={<MyLayout />}>
           <Route index element={<Candidate />} />
@@ -29,6 +37,10 @@ export default function App() {
           <Route path="challenge/knowledge" element={<Knowledge />} />
           <Route path="test" element={<Testing />} />
           <Route path="test/exam" element={<Exam />} />
+        </Route> 
+        <Route path="/candidates" element={<CandidateTesing />}>
+          <Route path="challengelist" element={<Challengelist />} />
+          <Route path="challengelist/:id" element={<CandidateTesting />} />
         </Route>
       </Routes>
     </BrowserRouter>

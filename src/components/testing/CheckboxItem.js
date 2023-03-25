@@ -28,8 +28,6 @@ const CheckboxItem = () => {
     return (
         <div className="form-check">
             {testCase && testCase.map(( e, index )=> {
-                console.log(index, "asdasd")
-                console.log(e, "111")
                 if (index == testCase.length - 1) return (
                     <Item value={e} onChange={onChange} isLastItem={true}/>
                 )

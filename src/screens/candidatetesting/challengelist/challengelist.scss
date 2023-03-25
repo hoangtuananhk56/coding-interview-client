@@ -1,0 +1,46 @@
+.challenge-list-page {
+  position: relative;
+}
+
+.challenge_item {
+  display: flex;
+  align-items: center;
+  // justify-content: space-between;
+  height: 100px;
+  // width: 100%;
+  border: 1px solid #eaeaec;
+  margin: 5px 0;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 0.5rem;
+  color: #0e141e;
+
+  .left-item {
+      display: flex;
+      align-items: center;
+      .item-key {
+          width: 30px;
+          font-size: 40px;
+          margin-left: 30px;
+          margin-right: 30px;
+      }
+      .item-title {
+          width: 700px;
+          font-size: 40px;
+        }
+      &:hover {
+          // cursor: pointer;
+          // background-color: #f6f6f6;
+          color: #1ba94c;
+      }
+  }
+  .right-item {
+      .start-btn {
+          margin: 0 30px;
+          &:hover {
+              cursor: pointer;
+              // background-color: #f6f6f6;
+              color: #1ba94c;
+          }
+      }
+  }
+}

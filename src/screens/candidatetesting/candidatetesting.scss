@@ -1,0 +1,27 @@
+.candidatetesting-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  .candidatetesting-page-header {
+    height: 60px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    img {
+      width: 146px;
+      height: 50px;
+      margin-left: 30px;
+    }
+  }
+  .candidatetesting-page-body {
+    display: flex;
+    justify-content: center;
+    .candidatetesting-menu-bar {
+      width: 5vw;
+      height: calc(100vh - 60px);
+      // background-color: aqua;
+      border-right: 1px solid #d6d6d6;
+    }
+  }
+}

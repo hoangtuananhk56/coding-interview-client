@@ -6,7 +6,7 @@
   border: 1px solid #eaeaec;
   margin: 2px 0;
   border-radius: 0.5rem;
-  color: #0e141e;
+  color: #001a48;
   .ids {
     width: 5%;
   }
@@ -44,5 +44,35 @@
         margin: 10px;
         font-size: 24px;
     }
+  }
+}
+
+.candidate-writing {
+  height: 400px;
+  background-color: #c7dafa;
+  margin: 10px;
+  border-radius: 5px;
+  .run-btn {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    margin: 10px 0;
+    .run-code-btn {
+      margin-right: 10px;
+      &:hover{
+        color: white;
+      }
+    }
+  }
+  .response-message {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    font-size: 32px;
+    font-weight: 500;
+    color: red;
+    border-radius: 5px;
+    border: 1px solid #03a9f4;
+    padding: 5px 15px;
   }
 }

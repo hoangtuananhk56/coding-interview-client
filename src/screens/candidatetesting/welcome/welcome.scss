@@ -1,0 +1,75 @@
+.welcome-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .welcome-page-left{
+    width: 40vw;
+    height: 100vh;
+    .welcome-page-left-body {
+      height: 200px;
+      width: 100%;
+      margin: 60px 15%;
+      .welcome-page-left-body-title {
+        height: 40px;
+        width: 100%;
+        font-size: 30px;
+        font-weight: 500;
+      }
+
+      .welcome-page-left-body-content {
+        width: 100%;
+        margin-top: 30px;
+        display: flex;
+        .welcome-page-left-body-content-item {
+          font-size: 18px;
+          margin-right: 60px;
+        }
+      }
+    }
+  }
+  .welcome-page-right{
+    width: 60vw;
+    height: 100vh;
+    background-color: #A5D6A7;
+    position: relative;
+    color: #343a32;
+    .welcome-page-right-body {
+      margin-top: 40px;
+      margin-left: 9%;
+      height: 300px;
+      .welcome-page-right-title {
+        font-size: 36px;
+        height: 48px;
+      }
+      .welcome-page-right-text {
+        font-size: 18px;
+        height: 30px;
+        margin-top: 10px;
+      }
+    }
+    .welcome-start-btn {
+      margin-left: 9%;
+      .create-btn {
+        background-color: #43A047;
+        &:hover{
+          cursor: pointer;
+          background-color: #00a808;
+          border: 1px solid white;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.welcome-header{
+  height: 80px;
+  display: flex;
+  align-items: center;
+  margin-top: 60px;
+  margin-left: 15%;
+  font-size: 30px;
+  font-weight: 650;
+  color: #343a32;
+}
