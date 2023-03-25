@@ -17,6 +17,7 @@
   .home-page-body {
     display: flex;
     justify-content: center;
+    font-family: 'Myriadat';
     .menu-bar {
       box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
       width: 12vw;
@@ -37,4 +38,36 @@
       height: auto;
     }
   }
+}
+
+@font-face {
+  font-family: "ProductSans-Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("ProductSans-Regular"),
+    url("../../assets/fonts/ProductSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Montserrat-Regular"),
+    url("../../assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Myriadat";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Myriadat"),
+    url("../../assets/fonts/MYRIADAT.woff") format("woff");
+}
+
+@font-face {
+  font-family: "DefaultSans";
+  font-style: normal;
+  font-weight: normal;
+  src: local("DefaultSans"),
+    url("../../assets/fonts/DefaultSans-Regular.woff") format("woff");
 }
