@@ -18,9 +18,18 @@
     display: flex;
     justify-content: center;
     .menu-bar {
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
       width: 12vw;
       height: calc(100vh - 60px);
-      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .nav-user-select {
+        margin: 20px;
+        display: flex;
+        align-items: center;
+        color: black !important;
+      }
     }
 
     .layout-home {
