@@ -10,21 +10,15 @@ const Login = () => {
   const navigate = useNavigate()
   const [message, setMessage] = useState();
   const onLogin = async (values) => {
-    console.log(values, 111)
-   var a =  await authApi.userLogin(values)
+    await authApi.userLogin(values)
     .then(res => {
-      console.log(res)
         //Save localstorage accessToken
         localStorage.setItem('accessToken', res.accessToken)
         localStorage.setItem('name', res.name)
         navigate("/")
     }).catch(err => {
       setMessage(err.response.data.message)
-      console.log(err.response.data.message);
-
-
     })
-    console.log(a);
   };
   const onLoginFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);

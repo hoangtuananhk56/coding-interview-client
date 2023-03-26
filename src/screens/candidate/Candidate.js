@@ -1,23 +1,12 @@
-import { Button, Form, Input, Pagination, Modal, Select, Typography } from 'antd';
-import { useState } from 'react';
+import { Button, Form, Input, Pagination, Modal, Select, notification } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { SmileOutlined } from '@ant-design/icons';
 import './candidate.scss';
 import CandidateItem from '../../components/candidate/CandidateItem';
+import candidateApi from '../../http/candidate';
 const { Search } = Input;
-const originData = [];
 const comments = []
 for (let i = 0; i < 10; i++) {
-  originData.push({
-    key: i,
-    id: i,
-    create_at: 123123213,
-    update_at: 23234234,
-    name: "Phillip " + i,
-    email: `anhht ${i}@gmail.com`,
-    challenge: "challenge " + i,
-    resolved: "resolved " + i,
-    point: "point " + i,
-    phone: "0123456789"
-  });
   comments.push({
     author: "David",
     comment: "Good"
@@ -27,7 +16,57 @@ const Candidate = () => {
   const [isModalOpenComment, setIsModalOpenComment] = useState(false);
   const [isModalOpenEmail, setIsModalOpenEmail] = useState(false);
   const [isModalOpenCreation, setIsModalOpenCreation] = useState(false);
-  const onSearch = (value) => console.log(value);
+  const [candidates, setCandidates] = useState([]);
+  const [count, setCount] = useState(0);
+  const [form] = Form.useForm()
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  useEffect(() => {
+    candidateApi.getAll(page, perPage).then(res => {
+      setCandidates(res.data)
+      setCount(res.count)
+    })
+  }, [page, perPage]);
+  const onHandleCandidate = (value) => {
+    candidateApi.create(value).then(res => {
+      setIsModalOpenCreation(false);
+      openNotification()
+      candidateApi.getAll(page, perPage).then(res => {
+        setCandidates(res.data)
+      })
+      form.resetFields()
+    }).catch(err => {
+        //TODO: Show error message 
+    })
+  }
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = () => {
+    api.open({
+      message: 'Notification Title',
+      description:
+        'Create a new record successfully',
+      icon: (
+        <SmileOutlined
+          style={{
+            color: '#4caf50',
+          }}
+        />
+      ),
+    });
+  };
+  const onSearch = (value) => {
+    if( value != '') {
+      candidateApi.search(value, page, perPage).then( res => {
+        setCandidates(res.data)
+        setCount(res.count)
+      })
+    } else {
+      candidateApi.getAll(page, perPage).then(res => {
+        setCandidates(res.data)
+        setCount(res.count)
+      })
+    }
+  };
   const onShowModalComment = () => {
     setIsModalOpenComment(true);
   };
@@ -77,28 +116,23 @@ const Candidate = () => {
           <div className='action'>Action</div>
         </div>
         {
-          originData && originData.map(e => {
+          candidates && candidates.map(e => {
             return (
-              <CandidateItem id={e.id} name={e.name} email={e.email} create_at={e.create_at} update_at={e.update_at} challenge={e.challenge} resolved={e.resolved} point={e.point} phone={e.phone} onShowModalComment={onShowModalComment} onShowModalEmail={onShowModalEmail} />
+              <CandidateItem id={e.id} name={e.name} email={e.email} create_at={e.createdAt} update_at={e.updatedAt} challenge={e.challenge} resolved={e.resolved} point={e.point} phone={e.phone} onShowModalComment={onShowModalComment} onShowModalEmail={onShowModalEmail} />
             )
           })
         }
       </div>
       <Pagination
         className="custom-pagination"
-        // locale={{ items_per_page: '' }}
-        total={originData.length}
-        defaultPageSize={5}
-        showLessItems={true}
-        pageSizeOptions={['5', '10', '15']}
+        total={count}
+        defaultPageSize={10}
+        pageSizeOptions={['10', '25', '50']}
         showSizeChanger
         showTotal={(total, range) => `${range[0] >= 0 ? range[0] : 0}-${range[1] >= 0 ? range[1] : 0} per ${total}`}
         onChange={(page, size) => {
-          // setPageIndex(page)
-          // setPageSize(size)
-          // setIsShowLess(() => {
-          //   return page > 4
-          // })
+          setPage(page)
+          setPerPage(size)
         }}
       />
       <Modal title="Comment Modal" open={isModalOpenComment} onOk={handleOk} onCancel={handleCancel}>
@@ -146,24 +180,64 @@ const Candidate = () => {
           <Input type='text' placeholder={`Candidate's email`} />
         </div>
       </Modal>
-      <Modal title="Candidate Creation" open={isModalOpenCreation} onOk={handleOk} onCancel={handleCancel}>
-        <div className='row'>
-          <div className='title'>Name</div>
-          <Input type='text'/>
-        </div>
-        <div className='row'>
-          <div className='title'> Email </div>
-          <Input type='text'/>
-        </div>
-        <div className='row'>
-          <div className='title'> Challenge </div>
-          <Input type='text' />
-        </div>
-        <div className='row'>
-          <div className='title'> Phone </div>
-          <Input type='text' />
-        </div>
-      </Modal>
+      {contextHolder}
+      <Form labelCol={{
+        span: 6,
+      }}
+        wrapperCol={{
+          span: 18,
+        }}
+        id={"Candidate-Creation"} onFinish={onHandleCandidate} form={form}>
+        <Modal title="Candidate Creation"
+          footer={(
+            <Button className="bg-green text-white border-white mt-5" form={'Candidate-Creation'} key="submit" htmlType="submit">
+              Create
+            </Button>)}
+          open={isModalOpenCreation} onCancel={handleCancel}>
+          <Form.Item
+            label="Name"
+            name="name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input candidate name!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: 'Please input candidate email!',
+              },
+            ]}
+          >
+            <Input type='email' />
+          </Form.Item>
+          <Form.Item
+            label="Challenge"
+            name="challenge"
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Phone"
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: 'Please input phone name!',
+              },
+            ]}
+          >
+            <Input type='number' />
+          </Form.Item>
+        </Modal>
+      </Form>
     </div>
 
   );
