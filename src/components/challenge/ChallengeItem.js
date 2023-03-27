@@ -3,18 +3,18 @@ import {
 } from '@ant-design/icons';
 import './challengeitem.scss';
 
-const ChallengeItem = ({id, title, isEdit, isEmail, isDelete}) => {
+const ChallengeItem = ({id, title, index, updateAt}) => {
     console.log(id, title)
     return (
         <div className="item-component" key={id}>
             <div className='left-item'>
-                <p className='item-key'>{id}</p>
+                <p className='item-key'>{index + 1}.</p>
                 <p className='item-title'>{title}</p>
             </div>
             <div className='right-item'>
-                {isEdit && <EditOutlined className='item-icon'/>}
-                {isEmail && <MailOutlined className='item-icon'/>}
-                {isDelete && <DeleteOutlined className='item-icon'/>}
+                <EditOutlined className='item-icon'/>
+                <MailOutlined className='item-icon'/>
+                <DeleteOutlined className='item-icon'/>
             </div>
         </div>
     );

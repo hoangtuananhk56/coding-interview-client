@@ -1,32 +1,44 @@
+import React, { useState, useEffect } from 'react';
 import { Button, Input, Pagination } from 'antd';
 import { useNavigate } from "react-router-dom";
 import ChallengeItem from '../../components/challenge/ChallengeItem';
 import './testing.scss';
+import challengeAPI from '../../http/challengeAPI';
 const { Search } = Input;
-const originData = [];
-
-for (let i = 0; i < 17; i++) {
-  originData.push({
-    key: i,
-    id: i,
-    title: "Testing "+i,
-    isEdit: true,
-    isEmail: true,
-    isDelete: true,
-  });
-} 
-
 
 const Testing = () => {
   const navigate = useNavigate();
-  const onSearch = (value) => console.log(value);
+  const [challenges, setChallenges] = useState([]);
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  useEffect(() => {
+    challengeAPI.getAll(page, perPage).then(res => {
+      setChallenges(res.data)
+      setCount(res.count)
+    })
+  }, [page, perPage]);
+  const onSearch = (value) => {
+    if (value !== '') {
+      challengeAPI.search(value, page, perPage).then(res => {
+        setChallenges(res.data)
+        setCount(res.count)
+      }).catch(err => {
+        setChallenges([])
+        setCount(0)
+      })
+    } else {
+      challengeAPI.getAll(page, perPage).then(res => {
+        setChallenges(res.data)
+        setCount(res.count)
+      })
+    }
+  };
   return (
     <div className="home">
       <div className="title-1">
         <div className='exam-search'>
           <div className='title-icon' title='Back to prepage'>
-            {/* <LeftOutlined />
-            Testing */}
           </div>
           <div className='right-search'>
             <Search 
@@ -37,34 +49,30 @@ const Testing = () => {
                 width: 200,
               }}
             />
-            <Button prefixCls='create-btn'>CREATE</Button>
+            <Button prefixCls='create-btn' onClick={() =>{navigate("exam")}}>CREATE</Button>
           </div>
         </div>
       </div>
       <div className='my-table'>
         {
-          originData && originData.map(e => {
+          challenges && challenges.map((e, index) => {
             return (
-              <ChallengeItem id={e.id} title={e.title} isEdit={e.isEdit} isEmail={e.isEmail} isDelete={e.isDelete}/>
+              <ChallengeItem id={e._id} title={e.name} index={index}/>
             )
           })
         }
       </div>
       <Pagination
           className="custom-pagination"
-          // locale={{ items_per_page: '' }}
-          total={originData.length}
+          total={count}
           defaultPageSize={5}
           showLessItems={true}
           pageSizeOptions={['5', '10', '15']}
           showSizeChanger
           showTotal={(total, range) => `${range[0] >= 0 ? range[0] : 0}-${range[1] >= 0 ? range[1] : 0} per ${total}`}
           onChange={(page, size) => {
-            // setPageIndex(page)
-            // setPageSize(size)
-            // setIsShowLess(() => {
-            //   return page > 4
-            // })
+            setPage(page)
+            setPerPage(size)
           }}
         />
     </div>
