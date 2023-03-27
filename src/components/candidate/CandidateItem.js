@@ -3,10 +3,10 @@ import {
 } from '@ant-design/icons';
 import './candidateitem.scss';
 
-const CandidateItem = ({id, name, email,create_at,update_at, challenge, resolved, point, phone, onShowModalComment, onShowModalEmail}) => {
+const CandidateItem = ({id,index, name, email,create_at,update_at, challenge, resolved, point, phone, onShowModalComment, onShowModalEmail}) => {
     return (
         <div className="candidate-item-component" key={id}>
-            <div className='ids'>{id}</div>
+            <div className='ids'>{index}</div>
             <div className='name'>{name}</div>
             <div className='email'>{email}</div>
             <div className='create_at'>{create_at}</div>
@@ -17,7 +17,9 @@ const CandidateItem = ({id, name, email,create_at,update_at, challenge, resolved
             <div className='phone'>{phone}</div>
             <div className='action'>
                 <div className='icon'>
-                    <CommentOutlined onClick={onShowModalComment}/>
+                    <CommentOutlined onClick={() => {
+                        onShowModalComment(id)
+                    }}/>
                 </div>
                 <div className='icon'>
                     <MailOutlined onClick={onShowModalEmail}/>

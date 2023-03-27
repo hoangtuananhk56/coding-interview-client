@@ -4,19 +4,17 @@ import { SmileOutlined } from '@ant-design/icons';
 import './candidate.scss';
 import CandidateItem from '../../components/candidate/CandidateItem';
 import candidateApi from '../../http/candidate';
+import commentApi from '../../http/commentAPI';
 const { Search } = Input;
-const comments = []
-for (let i = 0; i < 10; i++) {
-  comments.push({
-    author: "David",
-    comment: "Good"
-  })
-}
+
 const Candidate = () => {
   const [isModalOpenComment, setIsModalOpenComment] = useState(false);
   const [isModalOpenEmail, setIsModalOpenEmail] = useState(false);
   const [isModalOpenCreation, setIsModalOpenCreation] = useState(false);
   const [candidates, setCandidates] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState();
+  const [currentCandidateId, setCurrentCandidateId] = useState();
   const [count, setCount] = useState(0);
   const [form] = Form.useForm()
   const [page, setPage] = useState(1);
@@ -36,7 +34,15 @@ const Candidate = () => {
       })
       form.resetFields()
     }).catch(err => {
-        //TODO: Show error message 
+      //TODO: Show error message 
+    })
+  }
+  const getAllCommentByID = (id) => {
+    commentApi.getAll(id).then(res => {
+      setComments(res.data)
+    }).catch(err => {
+      //TODO: show error message
+      setComments([])
     })
   }
   const [api, contextHolder] = notification.useNotification();
@@ -55,8 +61,8 @@ const Candidate = () => {
     });
   };
   const onSearch = (value) => {
-    if( value != '') {
-      candidateApi.search(value, page, perPage).then( res => {
+    if (value != '') {
+      candidateApi.search(value, page, perPage).then(res => {
         setCandidates(res.data)
         setCount(res.count)
       })
@@ -67,9 +73,21 @@ const Candidate = () => {
       })
     }
   };
-  const onShowModalComment = () => {
+  const onShowModalComment = (id) => {
     setIsModalOpenComment(true);
+    getAllCommentByID(id)
+    setCurrentCandidateId(id)
   };
+  const handleCreateComment = () => {
+    console.log(comment, 111)
+    if (comment !== undefined) {
+      commentApi.create(comment).then(res => {
+        openNotification()
+      })
+    }
+    setComment('')
+    handleOk()
+  }
   const handleOk = () => {
     setIsModalOpenComment(false);
     setIsModalOpenEmail(false);
@@ -116,9 +134,9 @@ const Candidate = () => {
           <div className='action'>Action</div>
         </div>
         {
-          candidates && candidates.map(e => {
+          candidates && candidates.map((e, index) => {
             return (
-              <CandidateItem id={e.id} name={e.name} email={e.email} create_at={e.createdAt} update_at={e.updatedAt} challenge={e.challenge} resolved={e.resolved} point={e.point} phone={e.phone} onShowModalComment={onShowModalComment} onShowModalEmail={onShowModalEmail} />
+              <CandidateItem id={e._id} index={index} name={e.name} email={e.email} create_at={e.createdAt} update_at={e.updatedAt} challenge={e.challenge} resolved={e.resolved} point={e.point} phone={e.phone} onShowModalComment={onShowModalComment} onShowModalEmail={onShowModalEmail} />
             )
           })
         }
@@ -135,18 +153,29 @@ const Candidate = () => {
           setPerPage(size)
         }}
       />
-      <Modal title="Comment Modal" open={isModalOpenComment} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Comment Modal"
+        open={isModalOpenComment}
+        onOk={handleOk} onCancel={handleCancel}
+        footer={(
+          <Button className="bg-green text-white border-white mt-5" onClick={handleCreateComment}>
+            Create
+          </Button>)}
+      >
         <div style={{ maxHeight: 300, overflow: 'auto' }}>
           {comments && comments.map(e => {
             return (
               <div className='row'>
-                <p>{e.author} : </p>
-                <p>{e.comment}</p>
+                <p>{e.name} : </p>
+                <p>{e.content}</p>
               </div>
             )
           })}
         </div>
-        <Input type='text' placeholder='comment...' />
+        <Input type='text' placeholder='comment...' onChange={e => setComment({
+          candidate_id: currentCandidateId,
+          content: e.target.value,
+          name: localStorage.getItem('name')
+        })} />
       </Modal>
       <Modal title="Candidate Invitation" open={isModalOpenEmail} onOk={handleOk} onCancel={handleCancel}>
         <div className='row'>
