@@ -1,35 +1,117 @@
-import { Button, Form, Input, Select, Radio, Table, Typography } from 'antd';
+import {
+    LeftOutlined
+} from '@ant-design/icons';
+import { Button, Input, Radio, Select, notification } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import {
-    LeftOutlined, PlusSquareOutlined, DeleteOutlined
-} from '@ant-design/icons';
-import ChallengeTag from '../../../components/testing/challengeTag'
-import CodingItem from '../../../components/testing/CodingItem'
-import CheckboxItem from '../../../components/testing/CheckboxItem'
-import './exam.scss'
+import ChallengeTag from '../../../components/testing/challengeTag';
+import CheckboxItem from '../../../components/testing/CheckboxItem';
+import CodingItem from '../../../components/testing/CodingItem';
 import RadioItem from '../../../components/testing/RadioItem';
+import examAPI from '../../../http/examAPI';
+import './exam.scss';
+import { useEffect } from 'react';
+import challengeAPI from '../../../http/challengeAPI';
 const { Search, TextArea } = Input;
-const originData = [];
-for (let i = 0; i < 3; i++) {
-    originData.push({
-        key: i,
-        id: i,
-        title: "SQL " + i,
-        tag: 'SQL'
-    });
-}
 
 const Exam = () => {
     const navigate = useNavigate();
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState('coding');
+    const [challengeName, setChallengeName] = useState('');
+    const [examList, setExamList] = useState([]);
+    const [exam, setExam] = useState({
+        title: '',
+        challenge_type: 'algorithm',
+        type: 'coding',
+        content: ""
+    });
+
+    const [coding, setCoding] = useState({
+        input: '',
+        output: '',
+        testcase: [
+            {
+                input: '',
+                output: ''
+            }
+        ]
+    })
+
     const onSearch = () => {
         console.log("onSearch")
     }
-    const handleChange = () => console.log("handleChange")
+
+    const handleChallengeTest = () => {
+        let examId = []
+        examList.forEach(e => {
+            examId.push(e._id)
+        })
+        let body = {
+            name: challengeName,
+            examids: examId
+        }
+        challengeAPI.create(body).then(() => {
+            notification()
+            navigate("/test")
+        }).catch(err => {
+            navigate("/test")
+            console.log(err)
+        })
+    }
+
+    const handleChange = (e) => setExam({ ...exam, challenge_type: e })
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
+        setExam({ ...exam, type: e.target.value })
+    };
+
+    const handleCreateExam = () => {
+        let body = {
+            title: exam.title,
+            challenge_type: exam.challenge_type,
+            type: exam.type,
+            content: exam.content,
+            coding
+        }
+
+        examAPI.create(body).then(res=> {
+            setExamList([...examList, res.data])
+            openNotification()
+        }).catch(err => console.log(err))
+        
+    }
+
+    const onHandleChange = (type, value) => {
+        switch (type) {
+            case 'title':
+                setExam({ ...exam, title: value })
+                break;
+            case 'content':
+                setExam({ ...exam, content: value })
+                break;
+            case 'challenge-name':
+                setChallengeName(value)
+                break;
+            default:
+                break;
+        }
+    }
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = () => {
+      api.open({
+        message: 'Notification Title',
+        description:
+          'Create a new record successfully',
+        icon: (
+          <SmileOutlined
+            style={{
+              color: '#4caf50',
+            }}
+          />
+        ),
+      });
     };
     return (
         <div className="exam">
@@ -43,12 +125,12 @@ const Exam = () => {
                         <div className='title'>
                             Title
                         </div>
-                        <Input className='input-1' placeholder='type title' />
+                        <Input className='input-1' placeholder='type title' onChange={e => onHandleChange('title', e.target.value)} />
                         <div className='title' style={{ width: 120 }}>
                             ChallengeType
                         </div>
                         <Select
-                            defaultValue="sql"
+                            defaultValue="algorithm"
                             style={{
                                 width: 120,
                             }}
@@ -75,10 +157,10 @@ const Exam = () => {
                         </div>
                         <div className='option'>
                             <Radio.Group onChange={onChange} value={value}>
-                                <Radio value={1}>Coding</Radio>
-                                <Radio value={2}>Check box</Radio>
-                                <Radio value={3}>Radio</Radio>
-                                <Radio value={4}>Writting</Radio>
+                                <Radio key={1} value={"coding"}>Coding</Radio>
+                                <Radio key={2} value={'check_box'}>Check box</Radio>
+                                <Radio key={3} value={'radio'}>Radio</Radio>
+                                <Radio key={4} value={'writting'}>Writting</Radio>
                             </Radio.Group>
                         </div>
                     </div>
@@ -88,14 +170,14 @@ const Exam = () => {
                             Content
                         </div>
                         <div className='input-2'>
-                            <TextArea rows={4} />
+                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} />
                         </div>
                     </div>
-                    {value == 1 && <CodingItem />}
-                    {value == 2 && <CheckboxItem />}
-                    {value == 3 && <RadioItem />}
-                    {value == 4 &&
-                        <div className='row' style={{marginTop: 10}}>
+                    {value == 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
+                    {value == 'check_box' && <CheckboxItem />}
+                    {value == 'radio' && <RadioItem />}
+                    {value == 'writting' &&
+                        <div className='row' style={{ marginTop: 10 }}>
                             <div className='title'>
                                 Result
                             </div>
@@ -107,9 +189,10 @@ const Exam = () => {
 
                 </div>
                 <div className='left-exam-footer'>
-                    <Button prefixCls='create-btn-exam'>CREATE</Button>
+                    <Button prefixCls='create-btn-exam' onClick={handleCreateExam}>CREATE</Button>
                 </div>
             </div>
+
             <div className='right-exam'>
                 <div className='header-list'>
                     List
@@ -122,19 +205,24 @@ const Exam = () => {
                         }}
                     />
                 </div>
+                <div className='header-list'>
+                            <span style={{fontSize: 14}}>Name</span> 
+                        <Input className='input-1' placeholder='Challenge Name' style={{width: 350}} onChange={e => onHandleChange('challenge-name', e.target.value)} />
+                </div>
                 <div className='challenge-list'>
                     {
-                        originData && originData.map(e => {
+                        examList && examList.map(e => {
                             return (
-                                <ChallengeTag id={e.id} title={e.title} tag={e.tag} />
+                                <ChallengeTag key={e.id} id={e.id} title={e.title} tag={e.challenge_type} />
                             )
                         })
                     }
                 </div>
                 <div className='challenge-list-footer'>
-                    <Button prefixCls='create-btn-exam'>CREATE</Button>
+                    <Button prefixCls='create-btn-exam' onClick={handleChallengeTest}>CREATE</Button>
                 </div>
             </div>
+            {contextHolder}
         </div>
     )
 }

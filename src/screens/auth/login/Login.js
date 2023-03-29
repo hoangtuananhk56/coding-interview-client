@@ -11,14 +11,14 @@ const Login = () => {
   const [message, setMessage] = useState();
   const onLogin = async (values) => {
     await authApi.userLogin(values)
-    .then(res => {
+      .then(res => {
         //Save localstorage accessToken
         localStorage.setItem('accessToken', res.accessToken)
         localStorage.setItem('name', res.name)
         navigate("/")
-    }).catch(err => {
-      setMessage(err.response.data.message)
-    })
+      }).catch(err => {
+        setMessage(err.response.data.message)
+      })
   };
   const onLoginFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -28,7 +28,7 @@ const Login = () => {
       <div className="login">
         <div className="login-form">
           <div className="login-logo">
-            <img src={logo} alt="logo"/>
+            <img src={logo} alt="logo" />
           </div>
           <div className="login-title">
             WELCOME TO BAST VIETNAM
@@ -77,7 +77,7 @@ const Login = () => {
               >
                 <Input.Password />
               </Form.Item>
-                 <p style={{marginLeft: 170, color:'red'}}>{message}</p>
+              <p style={{ marginLeft: 170, color: 'red' }}>{message}</p>
               <Form.Item
                 wrapperCol={{
                   offset: 8,

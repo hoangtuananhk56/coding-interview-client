@@ -4,7 +4,7 @@ import './index.scss'
 
 const ChallengeTag = ({title, tag, id}) => {
     return (
-        <div className="challenge-item" key={id}>
+        <div className="challenge-item">
             <div className="title">
                 {title}
                 <Tag color={"#FFCA28"} style={{marginLeft: 10}}>{tag}</Tag>

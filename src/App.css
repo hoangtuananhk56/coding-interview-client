@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-family: "Myriadat";
 }
 
 .App-logo {
@@ -36,4 +36,37 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+@font-face {
+  font-family: "ProductSans-Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("ProductSans-Regular"),
+    url("./assets/fonts/ProductSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-Regular";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Montserrat-Regular"),
+    url("./assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Myriadat";
+  font-style: normal;
+  font-weight: normal;
+  src: local("Myriadat"),
+    url("./assets/fonts/MYRIADAT.woff") format("woff");
+}
+
+@font-face {
+  font-family: "DefaultSans";
+  font-style: normal;
+  font-weight: normal;
+  src: local("DefaultSans"),
+    url("./assets/fonts/DefaultSans-Regular.woff") format("woff");
 }

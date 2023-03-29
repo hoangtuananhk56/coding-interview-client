@@ -12,12 +12,14 @@ const Testing = () => {
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+
   useEffect(() => {
     challengeAPI.getAll(page, perPage).then(res => {
       setChallenges(res.data)
       setCount(res.count)
     })
   }, [page, perPage]);
+  
   const onSearch = (value) => {
     if (value !== '') {
       challengeAPI.search(value, page, perPage).then(res => {
