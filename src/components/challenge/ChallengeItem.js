@@ -4,7 +4,7 @@ import {
 import moment from 'moment';
 import './challengeitem.scss';
 
-const ChallengeItem = ({id, title, index, updatedAt, onDelete}) => {
+const ChallengeItem = ({id, title, index, updatedAt,onEdit, onDelete}) => {
     return (
         <div className="item-component" key={id}>
             <div className='left-item'>
@@ -13,7 +13,7 @@ const ChallengeItem = ({id, title, index, updatedAt, onDelete}) => {
                 <p className='item-time'>{moment(updatedAt).format("YYYY-MM-DD")}</p>
             </div>
             <div className='right-item'>
-                <EditOutlined className='item-icon'/>
+                <EditOutlined className='item-icon' onClick={() => onEdit(id)}/>
                 <MailOutlined className='item-icon'/>
                 <DeleteOutlined className='item-icon' onClick={() => onDelete(id)}/>
             </div>

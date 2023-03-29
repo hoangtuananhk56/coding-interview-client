@@ -7,7 +7,7 @@ const challengeAPI = {
   },
   update(id, body){
     const uri = `/challenge/challenge/${id}`
-    return baseAxios.post(uri, body)
+    return baseAxios.put(uri, body)
   },
   getbyId(id){
     const uri = `/challenge/challenge/${id}`

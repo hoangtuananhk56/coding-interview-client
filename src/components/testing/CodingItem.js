@@ -102,7 +102,7 @@ const CodingItem = ({coding, setCoding}) => {
             <div className='testcase-list'>
                 {
                     coding.testcase && coding.testcase.map((e, index) => {
-                        return <TestCaseItem handleTestCase={handleTestCase} index={index} />
+                        return <TestCaseItem key={index} handleTestCase={handleTestCase} index={index} />
                     })
                 }
             </div>

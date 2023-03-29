@@ -10,6 +10,7 @@ import Algorithm from "./screens/challenge/challengeAlgorithm/Algorithm";
 import Knowledge from "./screens/challenge/challengeKnowledge/Knowledge";
 import Testing from "./screens/testing/Testing";
 import Exam from "./screens/testing/exam/Exam";
+import ExamEditing from "./screens/testing/exam/ExamEditing";
 import NoPage from "./screens/404/404";
 import Thank from "./screens/candidatetesting/thank/Thank";
 import Welcome from "./screens/candidatetesting/welcome/Welcome";
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="challenge/knowledge" element={<Knowledge />} />
           <Route path="test" element={<Testing />} />
           <Route path="test/exam" element={<Exam />} />
+          <Route path="test/exam/:id" element={<ExamEditing />} />
         </Route> 
         <Route path="/candidates" element={<CandidateTesing />}>
           <Route path="challengelist" element={<Challengelist />} />

@@ -60,6 +60,9 @@ const Testing = () => {
       })
     })
   }
+  const onEdit = (id) => {
+    navigate(`exam/${id}`)
+  }
   return (
     <div className="home">
       <div className="title-1">
@@ -83,7 +86,7 @@ const Testing = () => {
         {
           challenges && challenges.map((e, index) => {
             return (
-              <ChallengeItem id={e._id} title={e.name} index={index} updatedAt={e.updatedAt} onDelete={onDelete}/>
+              <ChallengeItem id={e._id} title={e.name} index={index} updatedAt={e.updatedAt} onEdit={onEdit} onDelete={onDelete}/>
             )
           })
         }

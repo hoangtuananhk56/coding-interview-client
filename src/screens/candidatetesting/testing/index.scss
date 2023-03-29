@@ -1,6 +1,7 @@
 .challenge-list-page {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 100vw;
   .challenge-list-page-menu-bar {
