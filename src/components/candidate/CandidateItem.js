@@ -1,6 +1,5 @@
-import {
-    EditOutlined, MailOutlined, CommentOutlined
-} from '@ant-design/icons';
+import { CommentOutlined, MailOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import './candidateitem.scss';
 
 const CandidateItem = ({id,index, name, email,create_at,update_at, challenge, resolved, point, phone, onShowModalComment, onShowModalEmail}) => {
@@ -9,8 +8,8 @@ const CandidateItem = ({id,index, name, email,create_at,update_at, challenge, re
             <div className='ids'>{index}</div>
             <div className='name'>{name}</div>
             <div className='email'>{email}</div>
-            <div className='create_at'>{create_at}</div>
-            <div className='update_at'>{update_at}</div>
+            <div className='create_at'>{moment(create_at).format("YYYY-MM-DD")}</div>
+            <div className='update_at'>{moment(update_at).format("YYYY-MM-DD")}</div>
             <div className='challenge'>{challenge}</div>
             <div className='resolved'>{resolved}</div>
             <div className='point'>{point}</div>

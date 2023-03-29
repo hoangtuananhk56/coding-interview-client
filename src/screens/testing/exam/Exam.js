@@ -11,7 +11,6 @@ import CodingItem from '../../../components/testing/CodingItem';
 import RadioItem from '../../../components/testing/RadioItem';
 import examAPI from '../../../http/examAPI';
 import './exam.scss';
-import { useEffect } from 'react';
 import challengeAPI from '../../../http/challengeAPI';
 const { Search, TextArea } = Input;
 
@@ -52,7 +51,7 @@ const Exam = () => {
             examids: examId
         }
         challengeAPI.create(body).then(() => {
-            notification()
+            openNotification()
             navigate("/test")
         }).catch(err => {
             navigate("/test")
@@ -173,10 +172,10 @@ const Exam = () => {
                             <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} />
                         </div>
                     </div>
-                    {value == 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
-                    {value == 'check_box' && <CheckboxItem />}
-                    {value == 'radio' && <RadioItem />}
-                    {value == 'writting' &&
+                    {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
+                    {value === 'check_box' && <CheckboxItem />}
+                    {value === 'radio' && <RadioItem />}
+                    {value === 'writting' &&
                         <div className='row' style={{ marginTop: 10 }}>
                             <div className='title'>
                                 Result

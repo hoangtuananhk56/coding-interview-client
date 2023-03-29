@@ -20,7 +20,11 @@ const challengeAPI = {
   search(title, page, perPage) {
     const uri = `/challenge/search/${title}?page=${page}&perPage=${perPage}`
     return baseAxios.get(uri)
-  }
+  },
+  deletebyId(id){
+    const uri = `/challenge/challenge/${id}`
+    return baseAxios.delete(uri)
+  },
 }
 
 export default challengeAPI

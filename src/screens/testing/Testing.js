@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Input, Pagination } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
+import { Button, Input, notification, Pagination } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import ChallengeItem from '../../components/challenge/ChallengeItem';
-import './testing.scss';
 import challengeAPI from '../../http/challengeAPI';
+import './testing.scss';
 const { Search } = Input;
 
 const Testing = () => {
@@ -11,8 +12,22 @@ const Testing = () => {
   const [challenges, setChallenges] = useState([]);
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-
+  const [perPage, setPerPage] = useState(5);
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = () => {
+    api.open({
+      message: 'Notification Title',
+      description:
+        'Delete this record successfully',
+      icon: (
+        <SmileOutlined
+          style={{
+            color: '#4caf50',
+          }}
+        />
+      ),
+    });
+  };
   useEffect(() => {
     challengeAPI.getAll(page, perPage).then(res => {
       setChallenges(res.data)
@@ -36,6 +51,15 @@ const Testing = () => {
       })
     }
   };
+  const onDelete = (id) => {
+    challengeAPI.deletebyId(id).then(res => {
+      openNotification()
+      challengeAPI.getAll(page, perPage).then(res => {
+        setChallenges(res.data)
+        setCount(res.count)
+      })
+    })
+  }
   return (
     <div className="home">
       <div className="title-1">
@@ -59,7 +83,7 @@ const Testing = () => {
         {
           challenges && challenges.map((e, index) => {
             return (
-              <ChallengeItem id={e._id} title={e.name} index={index}/>
+              <ChallengeItem id={e._id} title={e.name} index={index} updatedAt={e.updatedAt} onDelete={onDelete}/>
             )
           })
         }
@@ -77,6 +101,7 @@ const Testing = () => {
             setPerPage(size)
           }}
         />
+        {contextHolder}
     </div>
   );
 };

@@ -21,11 +21,15 @@
         .item-title {
             width: 500px;
             font-size: 40px;
-            &:hover {
-                cursor: pointer;
-                background-color: #f6f6f6;
-                color: #1ba94c;
-            }
+            // &:hover {
+            //     cursor: pointer;
+            //     background-color: #f6f6f6;
+            //     color: #1ba94c;
+            // }
+        }
+        .item-time {
+            width: 100px;
+            font-size: 18px;
         }
     }
     .right-item {
