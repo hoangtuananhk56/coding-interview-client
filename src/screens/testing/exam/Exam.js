@@ -159,7 +159,7 @@ const Exam = () => {
                                 <Radio key={1} value={"coding"}>Coding</Radio>
                                 <Radio key={2} value={'check_box'}>Check box</Radio>
                                 <Radio key={3} value={'radio'}>Radio</Radio>
-                                <Radio key={4} value={'writting'}>Writting</Radio>
+                                <Radio key={4} value={'writing'}>Writing</Radio>
                             </Radio.Group>
                         </div>
                     </div>
@@ -175,7 +175,7 @@ const Exam = () => {
                     {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
                     {value === 'check_box' && <CheckboxItem />}
                     {value === 'radio' && <RadioItem />}
-                    {value === 'writting' &&
+                    {value === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>
                             <div className='title'>
                                 Result

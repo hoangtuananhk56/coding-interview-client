@@ -7,7 +7,7 @@ const examAPI = {
   },
   update(id, body){
     const uri = `/exam/exam/${id}`
-    return baseAxios.post(uri, body)
+    return baseAxios.put(uri, body)
   },
   getbyId(id){
     const uri = `/exam/exam/${id}`

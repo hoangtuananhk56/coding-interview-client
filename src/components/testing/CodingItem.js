@@ -6,7 +6,7 @@ import './index.scss';
 import { useState } from 'react';
 
 
-const TestCaseItem = ({ handleTestCase, index }) => {
+const TestCaseItem = ({ handleTestCase, index, elemement }) => {
     return (
         <>
             <div className='row'>
@@ -14,7 +14,7 @@ const TestCaseItem = ({ handleTestCase, index }) => {
                     Test input
                 </div>
                 <div className='input-2'>
-                    <Input onChange={e => handleTestCase('input', e.target.value, index)}/>
+                    <Input onChange={e => handleTestCase('input', e.target.value, index)} value={elemement.input}/>
                 </div>
             </div>
             <div className='row'>
@@ -22,7 +22,7 @@ const TestCaseItem = ({ handleTestCase, index }) => {
                     Output
                 </div>
                 <div className='input-2' >
-                    <Input onChange={e => handleTestCase('output', e.target.value, index)}/>
+                    <Input onChange={e => handleTestCase('output', e.target.value, index)} value={elemement.output}/>
                 </div>
             </div>
         </>
@@ -30,16 +30,6 @@ const TestCaseItem = ({ handleTestCase, index }) => {
 }
 
 const CodingItem = ({coding, setCoding}) => {
-    // const [coding, setCoding] = useState({
-    //     input: '',
-    //     output: '',
-    //     testcase: [
-    //         {
-    //             input: '',
-    //             output: ''
-    //         }
-    //     ]
-    // })
     const handleCoding = (title, value) => {
         switch (title) {
             case "input":
@@ -87,7 +77,7 @@ const CodingItem = ({coding, setCoding}) => {
                     Input
                 </div>
                 <div className='input-2'>
-                    <Input onChange={e => handleCoding('input', e.target.value)} />
+                    <Input onChange={e => handleCoding('input', e.target.value)} value={coding.input}/>
                 </div>
             </div>
 
@@ -96,13 +86,13 @@ const CodingItem = ({coding, setCoding}) => {
                     Output
                 </div>
                 <div className='input-2'>
-                    <Input onChange={e => handleCoding('output', e.target.value)} />
+                    <Input onChange={e => handleCoding('output', e.target.value)} value={coding.output}/>
                 </div>
             </div>
             <div className='testcase-list'>
                 {
                     coding.testcase && coding.testcase.map((e, index) => {
-                        return <TestCaseItem key={index} handleTestCase={handleTestCase} index={index} />
+                        return <TestCaseItem key={index} handleTestCase={handleTestCase} index={index} elemement={e}/>
                     })
                 }
             </div>

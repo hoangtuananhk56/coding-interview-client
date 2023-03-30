@@ -17,16 +17,11 @@ const { Search, TextArea } = Input;
 const ExamEditing = (props) => {
     const navigate = useNavigate();
     const { id } = useParams();
-    const [value, setValue] = useState('coding');
+    // const [value, setValue] = useState('coding');
     const [challengeName, setChallengeName] = useState('');
     const [challenge, setChallenge] = useState();
     const [examList, setExamList] = useState([]);
-    const [exam, setExam] = useState({
-        title: '',
-        challenge_type: 'algorithm',
-        type: 'coding',
-        content: ""
-    });
+    const [exam, setExam] = useState();
 
     const [coding, setCoding] = useState({
         input: '',
@@ -45,7 +40,11 @@ const ExamEditing = (props) => {
             setChallengeName(res.data.name)
             if (res.data.examids.length !== 0) {
                 examAPI.getbyId(res.data.examids[0]).then(res1 => {
-                    setExam(res.data)
+                    setExam(res1.data)
+                    setExamList([...examList, res1.data])
+
+
+                    setCoding(res1.data.coding)
                 })
             }
         }).catch(err => {
@@ -78,7 +77,7 @@ const ExamEditing = (props) => {
     const handleChange = (e) => setExam({ ...exam, challenge_type: e })
     const onChange = (e) => {
         console.log('radio checked', e.target.value);
-        setValue(e.target.value);
+        // setValue(e.target.value);
         setExam({ ...exam, type: e.target.value })
     };
 
@@ -91,11 +90,10 @@ const ExamEditing = (props) => {
             coding
         }
 
-        examAPI.update(exam._id ,body).then(res=> {
-            setExamList([...examList, res.data])
+        examAPI.update(exam._id, body).then(res => {
             openNotification()
         }).catch(err => console.log(err))
-        
+
     }
 
     const onHandleChange = (type, value) => {
@@ -115,19 +113,28 @@ const ExamEditing = (props) => {
     }
     const [api, contextHolder] = notification.useNotification();
     const openNotification = () => {
-      api.open({
-        message: 'Notification Title',
-        description:
-          'Create a new record successfully',
-        icon: (
-          <SmileOutlined
-            style={{
-              color: '#4caf50',
-            }}
-          />
-        ),
-      });
+        api.open({
+            message: 'Notification Title',
+            description:
+                'Create a new record successfully',
+            icon: (
+                <SmileOutlined
+                    style={{
+                        color: '#4caf50',
+                    }}
+                />
+            ),
+        });
     };
+
+    const onDeleteExam = (id) => {
+        let arr = examList
+        arr = arr.filter(item => item._id !== id)
+        setExamList(arr)
+    }
+    if (!exam) return (
+        <>Loading!</>
+    );
     return (
         <div className="exam">
             <div className='left-exam'>
@@ -140,12 +147,12 @@ const ExamEditing = (props) => {
                         <div className='title'>
                             Title
                         </div>
-                        <Input className='input-1' placeholder='type title' onChange={e => onHandleChange('title', e.target.value)} />
+                        <Input className='input-1' placeholder='type title' value={exam.title} onChange={e => onHandleChange('title', e.target.value)} />
                         <div className='title' style={{ width: 120 }}>
                             ChallengeType
                         </div>
                         <Select
-                            defaultValue="algorithm"
+                            defaultValue={exam.challenge_type}
                             style={{
                                 width: 120,
                             }}
@@ -171,11 +178,11 @@ const ExamEditing = (props) => {
                             Type
                         </div>
                         <div className='option'>
-                            <Radio.Group onChange={onChange} value={value}>
+                            <Radio.Group onChange={onChange} value={exam.type}>
                                 <Radio key={1} value={"coding"}>Coding</Radio>
                                 <Radio key={2} value={'check_box'}>Check box</Radio>
                                 <Radio key={3} value={'radio'}>Radio</Radio>
-                                <Radio key={4} value={'writting'}>Writting</Radio>
+                                <Radio key={4} value={'writing'}>Writing</Radio>
                             </Radio.Group>
                         </div>
                     </div>
@@ -185,13 +192,13 @@ const ExamEditing = (props) => {
                             Content
                         </div>
                         <div className='input-2'>
-                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} />
+                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} value={exam.content}/>
                         </div>
                     </div>
-                    {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
-                    {value === 'check_box' && <CheckboxItem />}
-                    {value === 'radio' && <RadioItem />}
-                    {value === 'writting' &&
+                    {exam.type === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
+                    {exam.type === 'check_box' && <CheckboxItem />}
+                    {exam.type === 'radio' && <RadioItem />}
+                    {exam.type === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>
                             <div className='title'>
                                 Result
@@ -221,14 +228,14 @@ const ExamEditing = (props) => {
                     />
                 </div>
                 <div className='header-list'>
-                            <span style={{fontSize: 14}}>Name</span> 
-                        <Input className='input-1' placeholder='Challenge Name' value={challengeName} style={{width: 350}} onChange={e => onHandleChange('challenge-name', e.target.value)} />
+                    <span style={{ fontSize: 14 }}>Name</span>
+                    <Input className='input-1' placeholder='Challenge Name' value={challengeName} style={{ width: 350 }} onChange={e => onHandleChange('challenge-name', e.target.value)} />
                 </div>
                 <div className='challenge-list'>
                     {
                         examList && examList.map(e => {
                             return (
-                                <ChallengeTag key={e.id} id={e.id} title={e.title} tag={e.challenge_type} />
+                                <ChallengeTag key={e._id} id={e._id} title={e.title} tag={e.challenge_type} onDelete={onDeleteExam}/>
                             )
                         })
                     }
