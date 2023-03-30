@@ -22,7 +22,7 @@ const Exam = () => {
     const [exam, setExam] = useState({
         title: '',
         challenge_type: 'algorithm',
-        type: 'coding',
+        type: 'check_box',
         content: ""
     });
 
@@ -36,6 +36,17 @@ const Exam = () => {
             }
         ]
     })
+
+    const [checkbox, setCheckbox] = useState([
+        {
+            ischeck: false,
+            option: "",
+        }
+    ])
+
+    const onHandleCheckBox = (index, value) => {
+
+    }
 
     const onSearch = () => {
         console.log("onSearch")
@@ -61,7 +72,6 @@ const Exam = () => {
 
     const handleChange = (e) => setExam({ ...exam, challenge_type: e })
     const onChange = (e) => {
-        console.log('radio checked', e.target.value);
         setValue(e.target.value);
         setExam({ ...exam, type: e.target.value })
     };
@@ -173,7 +183,7 @@ const Exam = () => {
                         </div>
                     </div>
                     {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
-                    {value === 'check_box' && <CheckboxItem />}
+                    {value === 'check_box' && <CheckboxItem checkbox={checkbox} setCheckbox={setCheckbox}/>}
                     {value === 'radio' && <RadioItem />}
                     {value === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>

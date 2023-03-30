@@ -86,7 +86,7 @@ const Testing = () => {
         {
           challenges && challenges.map((e, index) => {
             return (
-              <ChallengeItem id={e._id} title={e.name} index={index} updatedAt={e.updatedAt} onEdit={onEdit} onDelete={onDelete}/>
+              <ChallengeItem key={e._id} id={e._id} title={e.name} index={index} updatedAt={e.updatedAt} onEdit={onEdit} onDelete={onDelete}/>
             )
           })
         }

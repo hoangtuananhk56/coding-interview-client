@@ -7,11 +7,11 @@ import './index.scss';
 const testCase = [1, 2, 3, 4, 5, 6, 7, 78, 8, 9, 90, 0, 0]
 // const testCase = [1]
 
-const Item = ({index, value, onChange, checked, isLastItem }) => {
+const Item = ({value, index, onChange, checked, isLastItem }) => {
     
     return (
-        <div className='item' key={index}>
-            <input className="form-check-input" type="checkbox" id="check1" name="option1" value="something" onChange={onChange} checked={checked}/>
+        <div className='item'>
+            <input className="form-check-input" type="checkbox" id="check1" name="option1" value="something" onChange={() => onChange(index)} checked={value.ischeck}/>
             <Input className='input-1' placeholder='type title' />
             {isLastItem ? 
             <PlusCircleOutlined style={{color: 'blue', fontSize: 20, marginLeft: 5}}/>
@@ -21,17 +21,17 @@ const Item = ({index, value, onChange, checked, isLastItem }) => {
     )
 }
 
-const CheckboxItem = () => {
-    const onChange = (checkedValues) => {
-        console.log('checked = ', checkedValues);
+const CheckboxItem = ({checkbox, setCheckbox}) => {
+    const onChange = (index) => {
+        console.log('checked = ');
     };
     return (
         <div className="form-check">
-            {testCase && testCase.map(( e, index )=> {
+            {checkbox && checkbox.map(( e, index )=> {
                 if (index == testCase.length - 1) return (
-                    <Item value={e} onChange={onChange} isLastItem={true}/>
+                    <Item key={index} index={index} value={e} onChange={onChange} isLastItem={true}/>
                 )
-                return <Item value={e} onChange={onChange} />
+                return <Item key={index} index={index} value={e} onChange={onChange} />
             })
             }                               
         </div>

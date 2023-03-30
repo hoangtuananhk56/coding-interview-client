@@ -1,17 +1,16 @@
 import {
-    LeftOutlined
+    LeftOutlined, SmileOutlined
 } from '@ant-design/icons';
-import { Button, Input, Radio, Select, notification } from 'antd';
-import { SmileOutlined } from '@ant-design/icons';
+import { Button, Input, notification, Radio, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import ChallengeTag from '../../../components/testing/challengeTag';
 import CheckboxItem from '../../../components/testing/CheckboxItem';
 import CodingItem from '../../../components/testing/CodingItem';
 import RadioItem from '../../../components/testing/RadioItem';
+import challengeAPI from '../../../http/challengeAPI';
 import examAPI from '../../../http/examAPI';
 import './exam.scss';
-import challengeAPI from '../../../http/challengeAPI';
 const { Search, TextArea } = Input;
 
 const ExamEditing = (props) => {
@@ -39,12 +38,22 @@ const ExamEditing = (props) => {
             setChallenge(res.data)
             setChallengeName(res.data.name)
             if (res.data.examids.length !== 0) {
-                examAPI.getbyId(res.data.examids[0]).then(res1 => {
-                    setExam(res1.data)
-                    setExamList([...examList, res1.data])
+                res.data.examids.forEach(item => {
+                    examAPI.getbyId(item).then(res1 => {
+                        // debugger
+                        setExam(res1.data)
+                        let arr = examList
+                        //Check exist item
+                        let index = arr.findIndex(e => {
+                            return e._id === res1.data._id
+                        })
 
-
-                    setCoding(res1.data.coding)
+                        if (index === -1) {
+                            arr.push(res1.data)
+                            setExamList(arr)
+                            setCoding(res1.data.coding)
+                        }
+                    })
                 })
             }
         }).catch(err => {
@@ -132,6 +141,11 @@ const ExamEditing = (props) => {
         arr = arr.filter(item => item._id !== id)
         setExamList(arr)
     }
+    const onSelect = (id) => {
+        let e = examList.find(e => e._id === id)
+        setExam(e)
+        setCoding(e.coding)
+    }
     if (!exam) return (
         <>Loading!</>
     );
@@ -192,7 +206,7 @@ const ExamEditing = (props) => {
                             Content
                         </div>
                         <div className='input-2'>
-                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} value={exam.content}/>
+                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} value={exam.content} />
                         </div>
                     </div>
                     {exam.type === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
@@ -235,7 +249,7 @@ const ExamEditing = (props) => {
                     {
                         examList && examList.map(e => {
                             return (
-                                <ChallengeTag key={e._id} id={e._id} title={e.title} tag={e.challenge_type} onDelete={onDeleteExam}/>
+                                <ChallengeTag key={e._id} id={e._id} title={e.title} tag={e.challenge_type} onSelect={onSelect} onDelete={onDeleteExam} />
                             )
                         })
                     }

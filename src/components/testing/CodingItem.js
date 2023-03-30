@@ -1,9 +1,6 @@
-import { Button, Form, Input, Select, Radio, Table, Typography } from 'antd';
-import {
-    LeftOutlined, PlusSquareOutlined, DeleteOutlined
-} from '@ant-design/icons';
+import { DeleteOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
 import './index.scss';
-import { useState } from 'react';
 
 
 const TestCaseItem = ({ handleTestCase, index, elemement }) => {

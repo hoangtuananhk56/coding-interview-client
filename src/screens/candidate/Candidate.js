@@ -61,7 +61,7 @@ const Candidate = () => {
     });
   };
   const onSearch = (value) => {
-    if (value != '') {
+    if (value !== '') {
       candidateApi.search(value, page, perPage).then(res => {
         setCandidates(res.data)
         setCount(res.count)

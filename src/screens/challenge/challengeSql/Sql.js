@@ -1,11 +1,10 @@
-import { Button, Form, Input, Pagination, Popconfirm, Table, Typography } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import {
-  LeftOutlined,
+  LeftOutlined
 } from '@ant-design/icons';
-import './sql.scss';
+import { Button, Input, Pagination } from 'antd';
+import { useNavigate } from "react-router-dom";
 import TestingItem from '../../../components/exam/examItem';
+import './sql.scss';
 const { Search } = Input;
 const originData = [];
 for (let i = 0; i < 17; i++) {

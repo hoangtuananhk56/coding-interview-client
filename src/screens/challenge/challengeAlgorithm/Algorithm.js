@@ -1,11 +1,10 @@
-import { Button, Form, Input, Pagination, Popconfirm, Table, Typography } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import {
-  LeftOutlined,
+  LeftOutlined
 } from '@ant-design/icons';
-import './algorithm.scss';
+import { Button, Input, Pagination } from 'antd';
+import { useNavigate } from "react-router-dom";
 import TestingItem from '../../../components/exam/examItem';
+import './algorithm.scss';
 const { Search } = Input;
 const originData = [];
 
@@ -19,7 +18,6 @@ for (let i = 0; i < 17; i++) {
     isDelete: true,
   });
 } 
-
 
 const Algorithm = () => {
   const navigate = useNavigate();

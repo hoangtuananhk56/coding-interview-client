@@ -30,7 +30,7 @@ const RadioItem = () => {
             {testCase && testCase.map(( e, index )=> {
                 console.log(index, "asdasd")
                 console.log(e, "111")
-                if (index == testCase.length - 1) return (
+                if (index === testCase.length - 1) return (
                     <Item value={e} onChange={onChange} isLastItem={true}/>
                 )
                 return <Item value={e} onChange={onChange} />

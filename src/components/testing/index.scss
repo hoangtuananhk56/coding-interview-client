@@ -10,6 +10,10 @@
         width: 90%;
         font-size: 18px;
         font-weight: 500;
+        &:hover {
+            cursor: pointer;
+            background-color: #ebf5fc;
+        }
     }
     .icon {
         width: 10%;

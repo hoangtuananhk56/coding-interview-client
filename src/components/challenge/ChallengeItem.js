@@ -6,7 +6,7 @@ import './challengeitem.scss';
 
 const ChallengeItem = ({id, title, index, updatedAt,onEdit, onDelete}) => {
     return (
-        <div className="item-component" key={id}>
+        <div className="item-component">
             <div className='left-item'>
                 <p className='item-key'>{index + 1}.</p>
                 <p className='item-title'>{title}</p>

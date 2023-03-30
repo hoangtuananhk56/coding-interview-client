@@ -1,5 +1,5 @@
-import { Input, Button } from 'antd';
-import { Outlet, useNavigate } from "react-router-dom";
+import { Button } from 'antd';
+import { useNavigate } from "react-router-dom";
 import './challengelist.scss';
 
 const challengelist = []

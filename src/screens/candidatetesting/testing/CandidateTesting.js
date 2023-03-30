@@ -1,9 +1,8 @@
-import { Input, Button } from 'antd';
-import { Outlet, useNavigate } from "react-router-dom";
-import CandidateWriting from '../../../components/candidate/CandidateWriting'
-import RadioItem from '../../../components/testing/RadioItem'
-import CheckboxItem from '../../../components/testing/CheckboxItem'
-import Coding from '../../../components/candidate/Coding'
+import { useNavigate } from "react-router-dom";
+import CandidateWriting from '../../../components/candidate/CandidateWriting';
+import Coding from '../../../components/candidate/Coding';
+import CheckboxItem from '../../../components/testing/CheckboxItem';
+import RadioItem from '../../../components/testing/RadioItem';
 import './index.scss';
 
 const CandidateTesting = () => {
