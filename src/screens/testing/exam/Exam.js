@@ -16,7 +16,7 @@ const { Search, TextArea } = Input;
 
 const Exam = () => {
     const navigate = useNavigate();
-    const [value, setValue] = useState('coding');
+    const [value, setValue] = useState('check_box');
     const [challengeName, setChallengeName] = useState('');
     const [examList, setExamList] = useState([]);
     const [exam, setExam] = useState({
@@ -35,18 +35,14 @@ const Exam = () => {
                 output: ''
             }
         ]
-    })
+    });
 
     const [checkbox, setCheckbox] = useState([
         {
-            ischeck: false,
+            ischeck: true,
             option: "",
         }
-    ])
-
-    const onHandleCheckBox = (index, value) => {
-
-    }
+    ]);
 
     const onSearch = () => {
         console.log("onSearch")
@@ -82,14 +78,15 @@ const Exam = () => {
             challenge_type: exam.challenge_type,
             type: exam.type,
             content: exam.content,
-            coding
+            coding,
+            checkbox
         }
 
-        examAPI.create(body).then(res=> {
+        examAPI.create(body).then(res => {
             setExamList([...examList, res.data])
             openNotification()
         }).catch(err => console.log(err))
-        
+
     }
 
     const onHandleChange = (type, value) => {
@@ -109,18 +106,18 @@ const Exam = () => {
     }
     const [api, contextHolder] = notification.useNotification();
     const openNotification = () => {
-      api.open({
-        message: 'Notification Title',
-        description:
-          'Create a new record successfully',
-        icon: (
-          <SmileOutlined
-            style={{
-              color: '#4caf50',
-            }}
-          />
-        ),
-      });
+        api.open({
+            message: 'Notification Title',
+            description:
+                'Create a new record successfully',
+            icon: (
+                <SmileOutlined
+                    style={{
+                        color: '#4caf50',
+                    }}
+                />
+            ),
+        });
     };
     return (
         <div className="exam">
@@ -183,7 +180,7 @@ const Exam = () => {
                         </div>
                     </div>
                     {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
-                    {value === 'check_box' && <CheckboxItem checkbox={checkbox} setCheckbox={setCheckbox}/>}
+                    {value === 'check_box' && <CheckboxItem checkbox={checkbox} setCheckbox={setCheckbox} />}
                     {value === 'radio' && <RadioItem />}
                     {value === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>
@@ -215,8 +212,8 @@ const Exam = () => {
                     />
                 </div>
                 <div className='header-list'>
-                            <span style={{fontSize: 14}}>Name</span> 
-                        <Input className='input-1' placeholder='Challenge Name' style={{width: 350}} onChange={e => onHandleChange('challenge-name', e.target.value)} />
+                    <span style={{ fontSize: 14 }}>Name</span>
+                    <Input className='input-1' placeholder='Challenge Name' style={{ width: 350 }} onChange={e => onHandleChange('challenge-name', e.target.value)} />
                 </div>
                 <div className='challenge-list'>
                     {

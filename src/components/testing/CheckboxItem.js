@@ -4,36 +4,50 @@ import {
 } from '@ant-design/icons';
 import './index.scss';
 
-const testCase = [1, 2, 3, 4, 5, 6, 7, 78, 8, 9, 90, 0, 0]
-// const testCase = [1]
+const Item = ({ value, index, onHandleInput, onChange, checked, isLastItem, onAdd, onDelete }) => {
 
-const Item = ({value, index, onChange, checked, isLastItem }) => {
-    
     return (
         <div className='item'>
-            <input className="form-check-input" type="checkbox" id="check1" name="option1" value="something" onChange={() => onChange(index)} checked={value.ischeck}/>
-            <Input className='input-1' placeholder='type title' />
-            {isLastItem ? 
-            <PlusCircleOutlined style={{color: 'blue', fontSize: 20, marginLeft: 5}}/>
-            : <MinusCircleOutlined  style={{color: 'red', fontSize: 20, marginLeft: 5}}/>
+            <input className="form-check-input" type="checkbox" id="check1" name="option1" value="something" onChange={() => onChange(index)} checked={value.ischeck} />
+            <Input className='input-1' placeholder='type title' value={value.option} onChange={(e) => onHandleInput(index, e.target.value)}/>
+            {isLastItem ?
+                <PlusCircleOutlined style={{ color: 'blue', fontSize: 20, marginLeft: 5 }} onClick={() => onAdd()}/>
+                : <MinusCircleOutlined style={{ color: 'red', fontSize: 20, marginLeft: 5 }} onClick={() => onDelete(index)} />
             }
         </div>
     )
 }
 
-const CheckboxItem = ({checkbox, setCheckbox}) => {
+const CheckboxItem = ({ checkbox, setCheckbox }) => {
     const onChange = (index) => {
-        console.log('checked = ');
+        console.log('checked = ', index);
+        let arr = checkbox
+        arr[index].ischeck = !checkbox[index].ischeck
+        setCheckbox([...arr])
     };
+    const onAdd = () => {
+        setCheckbox([...checkbox, {ischeck: false, option: ''}])
+    }
+    const onDelete = (index) => {
+        let arr = checkbox
+        arr.splice(index, 1)
+        setCheckbox([...arr])
+    }
+    const onHandleInput = (index, value) => {
+        console.log(index);
+        let arr = checkbox
+        arr[index].option = value
+        setCheckbox([...arr])
+    }
     return (
         <div className="form-check">
-            {checkbox && checkbox.map(( e, index )=> {
-                if (index == testCase.length - 1) return (
-                    <Item key={index} index={index} value={e} onChange={onChange} isLastItem={true}/>
+            {checkbox && checkbox.map((e, index) => {
+                if (index === checkbox.length - 1) return (
+                    <Item key={index} index={index} value={e} onChange={onChange} onHandleInput={onHandleInput} isLastItem={true} onAdd={onAdd}/>
                 )
-                return <Item key={index} index={index} value={e} onChange={onChange} />
+                return <Item key={index} index={index} value={e} onChange={onChange} onDelete={onDelete} onHandleInput={onHandleInput} />
             })
-            }                               
+            }
         </div>
     );
 }

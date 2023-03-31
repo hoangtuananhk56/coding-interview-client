@@ -18,7 +18,7 @@ const ExamEditing = (props) => {
     const { id } = useParams();
     // const [value, setValue] = useState('coding');
     const [challengeName, setChallengeName] = useState('');
-    const [challenge, setChallenge] = useState();
+    const [, setChallenge] = useState();
     const [examList, setExamList] = useState([]);
     const [exam, setExam] = useState();
 
@@ -32,6 +32,13 @@ const ExamEditing = (props) => {
             }
         ]
     })
+
+    const [checkbox, setCheckbox] = useState([
+        {
+            ischeck: true,
+            option: "",
+        }
+    ]);
 
     useEffect(() => {
         challengeAPI.getbyId(id).then(res => {
@@ -52,6 +59,7 @@ const ExamEditing = (props) => {
                             arr.push(res1.data)
                             setExamList(arr)
                             setCoding(res1.data.coding)
+                            setCheckbox(res1.data.checkbox)
                         }
                     })
                 })
@@ -59,7 +67,7 @@ const ExamEditing = (props) => {
         }).catch(err => {
             console.log(err);
         })
-    }, [])
+    }, [id,examList])
 
     const onSearch = () => {
         console.log("onSearch")
@@ -96,7 +104,8 @@ const ExamEditing = (props) => {
             challenge_type: exam.challenge_type,
             type: exam.type,
             content: exam.content,
-            coding
+            coding,
+            checkbox,
         }
 
         examAPI.update(exam._id, body).then(res => {
@@ -210,7 +219,7 @@ const ExamEditing = (props) => {
                         </div>
                     </div>
                     {exam.type === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
-                    {exam.type === 'check_box' && <CheckboxItem />}
+                    {exam.type === 'check_box' && <CheckboxItem checkbox={checkbox} setCheckbox={setCheckbox} />}
                     {exam.type === 'radio' && <RadioItem />}
                     {exam.type === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>
@@ -238,7 +247,7 @@ const ExamEditing = (props) => {
                         onSearch={onSearch}
                         style={{
                             width: 350,
-                        }}
+                        }} 
                     />
                 </div>
                 <div className='header-list'>
