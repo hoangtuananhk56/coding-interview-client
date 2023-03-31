@@ -134,6 +134,21 @@ const Exam = () => {
             ),
         });
     };
+
+    const onDeleteExam = (id) => {
+        let arr = examList
+        arr = arr.filter(item => item._id !== id)
+        setExamList(arr)
+    }
+    const onSelect = (id) => {
+        console.log(id);
+        let e = examList.find(e => e._id === id)
+        console.log(e);
+
+        setExam(e)
+        setCoding(e.coding)
+    }
+
     return (
         <div className="exam">
             <div className='left-exam'>
@@ -146,12 +161,12 @@ const Exam = () => {
                         <div className='title'>
                             Title
                         </div>
-                        <Input className='input-1' placeholder='type title' onChange={e => onHandleChange('title', e.target.value)} />
+                        <Input className='input-1' placeholder='type title' value={exam.title} onChange={e => onHandleChange('title', e.target.value)} />
                         <div className='title' style={{ width: 120 }}>
                             ChallengeType
                         </div>
                         <Select
-                            defaultValue="algorithm"
+                            defaultValue={exam.challenge_type}
                             style={{
                                 width: 120,
                             }}
@@ -177,7 +192,7 @@ const Exam = () => {
                             Type
                         </div>
                         <div className='option'>
-                            <Radio.Group onChange={onChange} value={value}>
+                            <Radio.Group onChange={onChange} value={exam.type}>
                                 <Radio key={1} value={"coding"}>Coding</Radio>
                                 <Radio key={2} value={'check_box'}>Check box</Radio>
                                 <Radio key={3} value={'radio'}>Radio</Radio>
@@ -191,7 +206,7 @@ const Exam = () => {
                             Content
                         </div>
                         <div className='input-2'>
-                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} />
+                            <TextArea rows={4} onChange={e => onHandleChange('content', e.target.value)} value={exam.content}/>
                         </div>
                     </div>
                     {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
@@ -234,7 +249,7 @@ const Exam = () => {
                     {
                         examList && examList.map(e => {
                             return (
-                                <ChallengeTag key={e.id} id={e.id} title={e.title} tag={e.challenge_type} />
+                                <ChallengeTag key={e._id} id={e._id} title={e.title} tag={e.challenge_type} onSelect={onSelect} onDelete={onDeleteExam} />
                             )
                         })
                     }
