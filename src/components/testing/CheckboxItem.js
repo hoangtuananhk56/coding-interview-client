@@ -4,7 +4,7 @@ import {
 } from '@ant-design/icons';
 import './index.scss';
 
-const Item = ({ value, index, onHandleInput, onChange, checked, isLastItem, onAdd, onDelete }) => {
+const Item = ({ value, index, onHandleInput, onChange, isLastItem, onAdd, onDelete }) => {
 
     return (
         <div className='item'>
@@ -20,7 +20,6 @@ const Item = ({ value, index, onHandleInput, onChange, checked, isLastItem, onAd
 
 const CheckboxItem = ({ checkbox, setCheckbox }) => {
     const onChange = (index) => {
-        console.log('checked = ', index);
         let arr = checkbox
         arr[index].ischeck = !checkbox[index].ischeck
         setCheckbox([...arr])

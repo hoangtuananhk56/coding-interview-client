@@ -40,6 +40,13 @@ const ExamEditing = (props) => {
         }
     ]);
 
+    const [radio, setRadio] = useState([
+        {
+            ischeck: false,
+            option: "",
+        }
+    ]);
+
     useEffect(() => {
         challengeAPI.getbyId(id).then(res => {
             setChallenge(res.data)
@@ -106,6 +113,7 @@ const ExamEditing = (props) => {
             content: exam.content,
             coding,
             checkbox,
+            radio
         }
 
         examAPI.update(exam._id, body).then(res => {
@@ -220,7 +228,7 @@ const ExamEditing = (props) => {
                     </div>
                     {exam.type === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
                     {exam.type === 'check_box' && <CheckboxItem checkbox={checkbox} setCheckbox={setCheckbox} />}
-                    {exam.type === 'radio' && <RadioItem />}
+                    {exam.type === 'radio' && <RadioItem radio={radio} setRadio={setRadio}/>}
                     {exam.type === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>
                             <div className='title'>

@@ -4,38 +4,54 @@ import {
 } from '@ant-design/icons';
 import './index.scss';
 
-const testCase = [1, 2, 3, 4, 5, 6, 7, 78, 8, 9, 90, 0, 0]
-// const testCase = [1]
+const Item = ({ value, index, onHandleInput, onChange, isLastItem, onAdd, onDelete }) => {
 
-const Item = ({index, value, onChange, checked, isLastItem }) => {
-    
     return (
-        <div className='item' key={index}>
-            <input className="form-check-input" type="radio" id="check1" name="option1" value="something" onChange={onChange} checked={checked}/>
-            <Input className='input-1' placeholder='type title' />
-            {isLastItem ? 
-            <PlusCircleOutlined style={{color: 'blue', fontSize: 20, marginLeft: 5}}/>
-            : <MinusCircleOutlined  style={{color: 'red', fontSize: 20, marginLeft: 5}}/>
+        <div className='item'>
+              <input className="form-check-input" type="radio" id="check1" name="option1" value="something" onChange={() => onChange(index)} checked={value.ischeck} />
+            <Input className='input-1' placeholder='type title' value={value.option} onChange={(e) => onHandleInput(index, e.target.value)}/>
+            {isLastItem ?
+                <PlusCircleOutlined style={{ color: 'blue', fontSize: 20, marginLeft: 5 }} onClick={() => onAdd()}/>
+                : <MinusCircleOutlined style={{ color: 'red', fontSize: 20, marginLeft: 5 }} onClick={() => onDelete(index)} />
             }
         </div>
     )
 }
 
-const RadioItem = () => {
-    const onChange = (checkedValues) => {
-        console.log('checked = ', checkedValues);
+const RadioItem = ({ radio, setRadio }) => {
+    const onChange = (index) => {
+        console.log(index);
+        let arr = radio
+        arr.forEach(e => {
+            e.ischeck = false
+        })
+        arr[index].ischeck = !radio[index].ischeck
+        setRadio([...arr])
     };
+
+    const onAdd = () => {
+        setRadio([...radio, {ischeck: false, option: ''}])
+    }
+    const onDelete = (index) => {
+        let arr = radio
+        arr.splice(index, 1)
+        setRadio([...arr])
+    }
+    const onHandleInput = (index, value) => {
+        // console.log(index);
+        let arr = radio
+        arr[index].option = value
+        setRadio([...arr])
+    }
     return (
         <div className="form-check">
-            {testCase && testCase.map(( e, index )=> {
-                console.log(index, "asdasd")
-                console.log(e, "111")
-                if (index === testCase.length - 1) return (
-                    <Item value={e} onChange={onChange} isLastItem={true}/>
+            {radio && radio.map((e, index) => {
+                if (index === radio.length - 1) return (
+                    <Item value={e} key={index} index={index} onChange={onChange} isLastItem={true} onHandleInput={onHandleInput} onAdd={onAdd}/>
                 )
-                return <Item value={e} onChange={onChange} />
+                return <Item key={index} value={e} index={index} onChange={onChange} onHandleInput={onHandleInput} onDelete={onDelete}/>
             })
-            }                               
+            }
         </div>
     );
 }

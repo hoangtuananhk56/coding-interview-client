@@ -16,13 +16,13 @@ const { Search, TextArea } = Input;
 
 const Exam = () => {
     const navigate = useNavigate();
-    const [value, setValue] = useState('check_box');
+    const [value, setValue] = useState('radio');
     const [challengeName, setChallengeName] = useState('');
     const [examList, setExamList] = useState([]);
     const [exam, setExam] = useState({
         title: '',
         challenge_type: 'algorithm',
-        type: 'check_box',
+        type: 'radio',
         content: ""
     });
 
@@ -39,7 +39,14 @@ const Exam = () => {
 
     const [checkbox, setCheckbox] = useState([
         {
-            ischeck: true,
+            ischeck: false,
+            option: "",
+        }
+    ]);
+
+    const [radio, setRadio] = useState([
+        {
+            ischeck: false,
             option: "",
         }
     ]);
@@ -79,7 +86,8 @@ const Exam = () => {
             type: exam.type,
             content: exam.content,
             coding,
-            checkbox
+            checkbox,
+            radio
         }
 
         examAPI.create(body).then(res => {
@@ -181,7 +189,7 @@ const Exam = () => {
                     </div>
                     {value === 'coding' && <CodingItem coding={coding} setCoding={setCoding} />}
                     {value === 'check_box' && <CheckboxItem checkbox={checkbox} setCheckbox={setCheckbox} />}
-                    {value === 'radio' && <RadioItem />}
+                    {value === 'radio' && <RadioItem radio={radio} setRadio={setRadio}/>}
                     {value === 'writing' &&
                         <div className='row' style={{ marginTop: 10 }}>
                             <div className='title'>
