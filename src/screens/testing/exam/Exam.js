@@ -51,6 +51,9 @@ const Exam = () => {
         }
     ]);
 
+    const [writing, setWriting] = useState({
+        result: ''
+    })
     const onSearch = () => {
         console.log("onSearch")
     }
@@ -87,7 +90,8 @@ const Exam = () => {
             content: exam.content,
             coding,
             checkbox,
-            radio
+            radio,
+            writing
         }
 
         examAPI.create(body).then(res => {
@@ -107,6 +111,9 @@ const Exam = () => {
                 break;
             case 'challenge-name':
                 setChallengeName(value)
+                break;
+            case 'writing':
+                setWriting({...writing, result: value})
                 break;
             default:
                 break;
@@ -196,7 +203,7 @@ const Exam = () => {
                                 Result
                             </div>
                             <div className='input-2'>
-                                <TextArea rows={4} />
+                                <TextArea rows={4} onChange={e => onHandleChange('writing', e.target.value)} />
                             </div>
                         </div>
                     }

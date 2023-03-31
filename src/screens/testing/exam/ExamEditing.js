@@ -47,6 +47,10 @@ const ExamEditing = (props) => {
         }
     ]);
 
+    const [writing, setWriting] = useState({
+        result: ''
+    })
+
     useEffect(() => {
         challengeAPI.getbyId(id).then(res => {
             setChallenge(res.data)
@@ -113,7 +117,8 @@ const ExamEditing = (props) => {
             content: exam.content,
             coding,
             checkbox,
-            radio
+            radio,
+            writing
         }
 
         examAPI.update(exam._id, body).then(res => {
@@ -133,6 +138,9 @@ const ExamEditing = (props) => {
             case 'challenge-name':
                 setChallengeName(value)
                 break;
+                case 'writing':
+                    setWriting({...writing, result: value})
+                    break;
             default:
                 break;
         }
@@ -235,7 +243,7 @@ const ExamEditing = (props) => {
                                 Result
                             </div>
                             <div className='input-2'>
-                                <TextArea rows={4} />
+                                <TextArea rows={4} onChange={e => onHandleChange('writing', e.target.value)} />
                             </div>
                         </div>
                     }
