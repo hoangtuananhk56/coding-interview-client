@@ -1,13 +1,29 @@
 import { Input, Button } from 'antd';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import './welcome.scss'
 import logo from '../../../assets/images/logo.png'
+import { useEffect, useState } from 'react';
+import challengeAPI from '../../../http/challengeAPI';
 
 const Welcome = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [challenge, setChallenge] = useState();
   const onHandleStart = () => {
-    navigate('/welcome/challenges')
+    navigate('/candidates')
   }
+
+  useEffect(() => {
+    //Call challenge test to candidata
+    challengeAPI.getbyId(id).then(res => {
+      setChallenge(res.data)
+    }).catch(err => {
+      console.log(err);
+    })
+  }, [id])
+  if (!challenge) return (
+    <>Loading!</>
+);
   return (
     <div className="welcome-page">
       <div className="welcome-page-left">
@@ -25,7 +41,7 @@ const Welcome = () => {
             </div>
             <div className="welcome-page-left-body-content-item">
               <p>No. questions</p>
-              <p>3 questions</p>
+              <p>{challenge.examids.length} questions</p>
             </div>
           </div>
         </div>
@@ -58,7 +74,7 @@ const Welcome = () => {
           </div>
         </div>
         <div className='welcome-start-btn'>
-          <Button prefixCls='create-btn' onClick={onHandleStart()}>START</Button>
+          <Button prefixCls='create-btn' onClick={onHandleStart}>START</Button>
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ const {TextArea} = Input
 const CandidateWriting = () => {
     return (
         <div className='candidate-writing'>
-            <TextArea rows={20}/>
+            <TextArea rows={16}/>
         </div>
     );
 }

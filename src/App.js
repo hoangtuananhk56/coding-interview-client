@@ -23,13 +23,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="auth/login" element={<Login />} />
-          {/* <Route index element={<Login />} /> */}
-          <Route path="auth/register" element={<Register />} />
-          <Route path="*" element={<NoPage />} />
-          <Route path="thank" element={<Thank />} />
-          <Route path="welcome" element={<Welcome />} />
-          {/* </Route> */}
+        <Route path="auth/login" element={<Login />} />
+        <Route path="auth/register" element={<Register />} />
+        <Route path="*" element={<NoPage />} />
+        <Route path="thank" element={<Thank />} />
+        <Route path="welcome/:id" element={<Welcome />} />
         <Route path="/" element={<MyLayout />}>
           <Route index element={<Candidate />} />
           <Route path="challenge" element={<Challenge />} />
@@ -39,10 +37,10 @@ export default function App() {
           <Route path="test" element={<Testing />} />
           <Route path="test/exam" element={<Exam />} />
           <Route path="test/exam/:id" element={<ExamEditing />} />
-        </Route> 
+        </Route>
         <Route path="/candidates" element={<CandidateTesing />}>
-          <Route path="challengelist" element={<Challengelist />} />
-          <Route path="challengelist/:id" element={<CandidateTesting />} />
+          <Route path="/candidates/:challengeid" element={<Challengelist />} />
+          <Route path="/candidates/challengelist/:id" element={<CandidateTesting />} />
         </Route>
       </Routes>
     </BrowserRouter>
