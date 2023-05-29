@@ -4,7 +4,7 @@ export default createSlice({
   name: 'exam',
   initialState: {
     currentExam: null,
-    examList: [1, 2],
+    examList: [],
     status: 'error',
   },
   reducers: {
@@ -13,6 +13,7 @@ export default createSlice({
       state.currentExam = action.payload;
     },
     examListChange: (state, action) => {
+      console.log(action.payload, "payload");
       state.examList = action.payload;
     },
   },

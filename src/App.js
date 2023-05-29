@@ -38,9 +38,9 @@ export default function App() {
           <Route path="test/exam" element={<Exam />} />
           <Route path="test/exam/:id" element={<ExamEditing />} />
         </Route>
-        <Route path="/candidates" element={<CandidateTesing />}>
+        <Route path="/candidates/:challengeid" element={<CandidateTesing />}>
           <Route path="/candidates/:challengeid" element={<Challengelist />} />
-          <Route path="/candidates/challengelist/:id" element={<CandidateTesting />} />
+          <Route path="/candidates/:challengeid/:id" element={<CandidateTesting />} />
         </Route>
       </Routes>
     </BrowserRouter>
