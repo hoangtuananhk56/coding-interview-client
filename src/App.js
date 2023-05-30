@@ -16,7 +16,7 @@ import Thank from "./screens/candidatetesting/thank/Thank";
 import Welcome from "./screens/candidatetesting/welcome/Welcome";
 import Challengelist from "./screens/candidatetesting/challengelist/Challengelist";
 import CandidateTesting from "./screens/candidatetesting/testing/CandidateTesting";
-import CandidateTesing from "./screens/candidatetesting/Candidatetesting";
+import InterviewTesting from "./screens/candidatetesting/InterviewTesting";
 
 
 export default function App() {
@@ -38,7 +38,7 @@ export default function App() {
           <Route path="test/exam" element={<Exam />} />
           <Route path="test/exam/:id" element={<ExamEditing />} />
         </Route>
-        <Route path="/candidates/:challengeid" element={<CandidateTesing />}>
+        <Route path="/candidates/:challengeid" element={<InterviewTesting />}>
           <Route path="/candidates/:challengeid" element={<Challengelist />} />
           <Route path="/candidates/:challengeid/:id" element={<CandidateTesting />} />
         </Route>

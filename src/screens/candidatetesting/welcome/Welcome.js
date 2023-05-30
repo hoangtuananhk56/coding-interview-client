@@ -60,7 +60,7 @@ const Welcome = () => {
           <div className="welcome-page-right-text">
             Email address/Login
           </div>
-          <Input style={{width: 500}}/>
+          <Input style={{width: 500}} onChange={(e) => localStorage.setItem('email',e.target.value)}/>
           <div className="welcome-page-right-text">
             Declaration Statement
           </div>

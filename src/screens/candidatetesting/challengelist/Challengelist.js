@@ -30,7 +30,7 @@ const Challengelist = (props) => {
     }).catch(err => {
       console.log(err);
     })
-  }, [])
+  }, [challengeid, examList])
 
   const onHandleStart = (e) => {
     navigate('/candidates/'+challengeid+"/" + e)

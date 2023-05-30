@@ -20,6 +20,10 @@ const examAPI = {
   search(title, page, perPage) {
     const uri = `/exam/search/${title}?page=${page}&perPage=${perPage}`
     return baseAxios.get(uri)
+  },
+  runCode(body) {
+    const uri = '/exam/runcode'
+    return baseAxios.post(uri, body)
   }
 }
 

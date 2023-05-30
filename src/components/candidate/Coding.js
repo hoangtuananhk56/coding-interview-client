@@ -1,63 +1,80 @@
 import { Button, Input, Tabs, Select } from 'antd';
 import './candidateitem.scss';
 
-const {TextArea} = Input
+const { TextArea } = Input
 const { TabPane } = Tabs;
-const Coding = () => {
+const Coding = ({coding, setCoding, onRunCode, onSubmit}) => {
     const callback = (key) => {
         console.log(key);
     }
-    const handleChange = () => {
-        console.log("handleChange");
+    const handleChange = (e) => {
+        console.log("handleChange: ", e);
+        setCoding({...coding, language: e})
     }
     return (
         <div className='candidate-writing'>
-            <TextArea rows={20}/>
+            <TextArea rows={16} value={coding.code} onChange={e => setCoding({...coding, code: e.target.value})} />
             <div className='row'>
-            <Select
-            defaultValue="junior"
-            style={{
-              width: 120,
-            }}
-            onChange={handleChange}
-            options={[
-              {
-                value: 'junior',
-                label: 'Junior',
-              },
-              {
-                value: 'middle',
-                label: 'Midlle',
-              },
-              {
-                value: 'senior',
-                label: 'Senior',
-              },
-            ]}
-          />
+                <Select
+                    defaultValue="go"
+                    style={{
+                        width: 120,
+                    }}
+                    onChange={handleChange}
+                    options={[
+                        {
+                            value: 'java',
+                            label: 'Java',
+                        },
+                        {
+                            value: 'cpp',
+                            label: 'Cpp/g++',
+                        },
+                        {
+                            value: 'c',
+                            label: 'C/GCC',
+                        },
+                        {
+                            value: 'cs',
+                            label: 'C#',
+                        },
+                        {
+                            value: 'py',
+                            label: 'Python',
+                        },
+                        {
+                            value: 'js',
+                            label: 'JS',
+                        },
+                        {
+                            value: 'go',
+                            label: 'Golang',
+                        },
+                    ]}
+                />
                 <div className='run-btn'>
-                    <Button className='run-code-btn' style={{backgroundColor:'#7CB342'}}>Run Code</Button>
-                    <Button className='run-code-btn' style={{backgroundColor:'#43A047'}}>Submit</Button>
+                    <Button className='run-code-btn' style={{ backgroundColor: '#7CB342' }} onClick={() => onRunCode()}>Run Code</Button>
+                    <Button className='run-code-btn' style={{ backgroundColor: '#43A047' }} onClick={() => onSubmit()}>Submit</Button>
                 </div>
             </div>
             {/* <div className='response-message'>
                 Runtime Error
             </div> */}
-            <div className='response-message' style={{color: '#4caf50'}}>
+            <div className='response-message' style={{ color: '#4caf50' }}>
                 Successfully
             </div>
             <div className='candidate-writing-result'>
-            <Tabs defaultActiveKey="1" onChange={callback}>
-                <TabPane tab="Tab 1" key="1">
-                Content of Tab Pane 1
-                </TabPane>
-                <TabPane tab="Tab 2" key="2">
-                Content of Tab Pane 2
-                </TabPane>
-                <TabPane tab="Tab 3" key="3">
-                Content of Tab Pane 3
-                </TabPane>
-            </Tabs>
+                <Tabs defaultActiveKey="1" onChange={callback}>
+                    <TabPane tab="Tab 1" key="1">
+                        Content of Tab Pane 1
+                    </TabPane>
+                    <TabPane tab="Tab 2" key="2">
+                        Content of Tab Pane 2
+                    </TabPane>
+                    <TabPane tab="Tab 3" key="3">
+                        Content of Tab Pane 3
+                    </TabPane>
+                </Tabs>
                 {/* <div className='sample-test-list'>
                     <div>
                         Sample test 
