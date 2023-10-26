@@ -17,7 +17,7 @@ import Welcome from "./screens/candidatetesting/welcome/Welcome";
 import Challengelist from "./screens/candidatetesting/challengelist/Challengelist";
 import CandidateTesting from "./screens/candidatetesting/testing/CandidateTesting";
 import InterviewTesting from "./screens/candidatetesting/InterviewTesting";
-
+import ExamItem from "./screens/challenge/examitem/ExamItem";
 
 export default function App() {
   return (
@@ -34,18 +34,22 @@ export default function App() {
           <Route path="challenge/sql" element={<SQL />} />
           <Route path="challenge/algorithm" element={<Algorithm />} />
           <Route path="challenge/knowledge" element={<Knowledge />} />
+          <Route path="challenge/exam/:id" element={<ExamItem />} />
           <Route path="test" element={<Testing />} />
           <Route path="test/exam" element={<Exam />} />
           <Route path="test/exam/:id" element={<ExamEditing />} />
         </Route>
         <Route path="/candidates/:challengeid" element={<InterviewTesting />}>
           <Route path="/candidates/:challengeid" element={<Challengelist />} />
-          <Route path="/candidates/:challengeid/:id" element={<CandidateTesting />} />
+          <Route
+            path="/candidates/:challengeid/:id"
+            element={<CandidateTesting />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);

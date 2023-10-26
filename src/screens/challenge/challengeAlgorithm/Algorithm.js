@@ -1,76 +1,83 @@
-import {
-  LeftOutlined
-} from '@ant-design/icons';
-import { Button, Input, Pagination } from 'antd';
+import React, { useState, useEffect } from "react";
+import { LeftOutlined } from "@ant-design/icons";
+import { Button, Input, Pagination } from "antd";
 import { useNavigate } from "react-router-dom";
-import TestingItem from '../../../components/exam/examItem';
-import './algorithm.scss';
+import TestingItem from "../../../components/exam/examItem";
+import examAPI from "../../../http/examAPI";
+import "./algorithm.scss";
+import { ChallengeType } from "../../../config/define";
 const { Search } = Input;
-const originData = [];
-
-for (let i = 0; i < 17; i++) {
-  originData.push({
-    key: i,
-    id: i,
-    title: "Algorithm "+i,
-    isEdit: true,
-    isEmail: true,
-    isDelete: true,
-  });
-} 
 
 const Algorithm = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const onSearch = (value) => console.log(value);
+  const [exams, setExams] = useState([]);
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    examAPI.getAll(page, perPage, ChallengeType.Algorithm).then((res) => {
+      setExams(res.data);
+      setCount(res.count);
+    });
+  }, [page, perPage]);
+  const onEdit = (id) => {
+    navigate(`/test/exam/${id}`);
+  };
+
+  const onDelete = (id) => {
+    navigate("/");
+  };
   return (
     <div className="home">
       <div className="title-1">
-        <div className='algorithm-search'>
-          <div className='title-icon' title='Back to prepage' onClick={() => {
-              navigate("/challenge")
-          }}>
+        <div className="algorithm-search">
+          <div
+            className="title-icon"
+            title="Back to prepage"
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
             <LeftOutlined />
             Algorithm
           </div>
-          <div className='right-search'>
-            <Search 
-              className='search-input'
+          <div className="right-search">
+            <Search
+              className="search-input"
               placeholder="Enter Candidates"
               onSearch={onSearch}
               style={{
                 width: 200,
               }}
             />
-            <Button prefixCls='create-btn'>CREATE</Button>
+            <Button prefixCls="create-btn">CREATE</Button>
           </div>
         </div>
       </div>
-      <div className='my-table'>
-        {
-          originData && originData.map(e => {
-            return (
-              <TestingItem id={e.id} title={e.title} isEdit={e.isEdit} isEmail={e.isEmail} isDelete={e.isDelete}/>
-            )
-          })
-        }
+      <div className="my-table">
+        {exams &&
+          exams.map((e) => {
+            return <TestingItem item={e} onEdit={onEdit} onDelete={onDelete} />;
+          })}
       </div>
       <Pagination
-          className="custom-pagination"
-          // locale={{ items_per_page: '' }}
-          total={originData.length}
-          defaultPageSize={5}
-          showLessItems={true}
-          pageSizeOptions={['5', '10', '15']}
-          showSizeChanger
-          showTotal={(total, range) => `${range[0] >= 0 ? range[0] : 0}-${range[1] >= 0 ? range[1] : 0} per ${total}`}
-          onChange={(page, size) => {
-            // setPageIndex(page)
-            // setPageSize(size)
-            // setIsShowLess(() => {
-            //   return page > 4
-            // })
-          }}
-        />
+        className="custom-pagination"
+        total={count}
+        defaultPageSize={5}
+        showLessItems={true}
+        pageSizeOptions={["5", "10", "15"]}
+        showSizeChanger
+        showTotal={(total, range) =>
+          `${range[0] >= 0 ? range[0] : 0}-${
+            range[1] >= 0 ? range[1] : 0
+          } per ${total}`
+        }
+        onChange={(page, size) => {
+          setPage(page);
+          setPerPage(size);
+        }}
+      />
     </div>
   );
 };

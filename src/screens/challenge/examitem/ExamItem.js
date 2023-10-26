@@ -1,24 +1,17 @@
 import { LeftOutlined, SmileOutlined } from "@ant-design/icons";
-import { Button, Input, notification, Radio, Select } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Input, Radio, Select, notification } from "antd";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ChallengeTag from "../../../components/testing/challengeTag";
 import CheckboxItem from "../../../components/testing/CheckboxItem";
 import CodingItem from "../../../components/testing/CodingItem";
 import RadioItem from "../../../components/testing/RadioItem";
-import challengeAPI from "../../../http/challengeAPI";
 import examAPI from "../../../http/examAPI";
-import "./exam.scss";
-const { Search, TextArea } = Input;
+import "./exam_item.scss";
+const { TextArea } = Input;
 
-const ExamEditing = (props) => {
+const ExamItem = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // const [value, setValue] = useState('coding');
-  const [challengeName, setChallengeName] = useState("");
-  const [, setChallenge] = useState();
-  const [examList, setExamList] = useState([]);
-  const [exam, setExam] = useState();
 
   const [coding, setCoding] = useState({
     input: "",
@@ -33,7 +26,7 @@ const ExamEditing = (props) => {
 
   const [checkbox, setCheckbox] = useState([
     {
-      ischeck: true,
+      ischeck: false,
       option: "",
     },
   ]);
@@ -49,88 +42,48 @@ const ExamEditing = (props) => {
     result: "",
   });
 
-  useEffect(() => {
-    challengeAPI
-      .getbyId(id)
-      .then((res) => {
-        setChallenge(res.data);
-        setChallengeName(res.data.name);
-        if (res.data.examids.length !== 0) {
-          res.data.examids.forEach((item) => {
-            examAPI.getbyId(item).then((res1) => {
-              // debugger
-              setExam(res1.data);
-              let arr = examList;
-              //Check exist item
-              let index = arr.findIndex((e) => {
-                return e._id === res1.data._id;
-              });
+  const [exam, setExam] = useState({
+    id: "",
+    title: "",
+    challenge_type: "sql",
+    checkbox: checkbox,
+    coding: coding,
+    radio: radio,
+    writing: writing,
+    type: "coding",
+    content: "",
+  });
 
-              if (index === -1) {
-                arr.push(res1.data);
-                setExamList(arr);
-                setCoding(res1.data.coding);
-                setCheckbox(res1.data.checkbox);
-              }
-            });
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id, examList]);
-
-  const onSearch = () => {
-    console.log("onSearch");
-  };
-
-  const handleChallengeUpdate = () => {
-    let examId = [];
-    examList.forEach((e) => {
-      examId.push(e._id);
-    });
-    let body = {
-      name: challengeName,
-      examids: examId,
-    };
-    challengeAPI
-      .update(id, body)
-      .then(() => {
-        openNotification();
-        navigate("/test");
-      })
-      .catch((err) => {
-        navigate("/test");
-        console.log(err);
-      });
-  };
-
-  const handleChange = (e) => setExam({ ...exam, challenge_type: e });
   const onChange = (e) => {
-    console.log("radio checked", e.target.value);
-    // setValue(e.target.value);
+    console.log(e.target.value, 2222);
     setExam({ ...exam, type: e.target.value });
   };
 
-  const handleUpdateExam = () => {
-    let body = {
-      title: exam.title,
-      challenge_type: exam.challenge_type,
-      type: exam.type,
-      content: exam.content,
-      coding,
-      checkbox,
-      radio,
-      writing,
-    };
+  useEffect(() => {
+    examAPI.getbyId(id).then((res) => {
+      console.log(res.data, 111);
+      setExam({
+        id: res.data._id,
+        title: res.data.title,
+        challenge_type: res.data.challenge_type,
+        checkbox: res.data.checkbox,
+        coding: res.data.coding,
+        radio: res.data.radio,
+        writing: res.data.writing,
+        type: res.data.type,
+        content: res.data.content,
+      });
+    });
+  }, [id]);
 
-    examAPI
-      .update(exam._id, body)
-      .then((res) => {
-        openNotification();
-      })
-      .catch((err) => console.log(err));
+  const handleUpdateExam = () => {
+    console.log(exam);
+    // examAPI
+    //   .update(exam)
+    //   .then((res) => {
+    //     openNotification();
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   const onHandleChange = (type, value) => {
@@ -138,14 +91,26 @@ const ExamEditing = (props) => {
       case "title":
         setExam({ ...exam, title: value });
         break;
+      case "challenge-name":
+        setExam({ ...exam, challenge_type: value });
+        break;
+      case "type":
+        setWriting({ ...exam, type: value });
+        break;
       case "content":
         setExam({ ...exam, content: value });
         break;
-      case "challenge-name":
-        setChallengeName(value);
-        break;
       case "writing":
         setWriting({ ...writing, result: value });
+        break;
+      case "radio":
+        setRadio({ ...radio, result: value });
+        break;
+      case "check-box":
+        setCheckbox({ ...checkbox, result: value });
+        break;
+      case "coding":
+        setCoding({ ...coding, result: value });
         break;
       default:
         break;
@@ -166,30 +131,18 @@ const ExamEditing = (props) => {
     });
   };
 
-  const onDeleteExam = (id) => {
-    let arr = examList;
-    arr = arr.filter((item) => item._id !== id);
-    setExamList(arr);
-  };
-  const onSelect = (id) => {
-    let e = examList.find((e) => e._id === id);
-    setExam(e);
-    setCoding(e.coding);
-  };
-  if (!exam) return <>Loading!</>;
   return (
-    <div className="exam">
+    <div className="exam-item">
       <div className="left-exam">
         <div className="left-exam-body">
           <div
             className="back-title"
-            title="Back to prepage"
             onClick={() => {
-              navigate("/test");
+              navigate(-1);
             }}
           >
             <LeftOutlined style={{ fontSize: 18 }} />
-            Testing
+            Exam content
           </div>
           <div className="row">
             <div className="title">Title</div>
@@ -207,7 +160,7 @@ const ExamEditing = (props) => {
               style={{
                 width: 120,
               }}
-              onChange={handleChange}
+              onChange={(e) => onHandleChange("challenge-name", e)}
               options={[
                 {
                   value: "sql",
@@ -282,52 +235,9 @@ const ExamEditing = (props) => {
         </div>
       </div>
 
-      <div className="right-exam">
-        <div className="header-list">
-          List
-          <Search
-            className="search-input"
-            placeholder="Enter exam"
-            onSearch={onSearch}
-            style={{
-              width: 350,
-            }}
-          />
-        </div>
-        <div className="header-list">
-          <span style={{ fontSize: 14 }}>Name</span>
-          <Input
-            className="input-1"
-            placeholder="Challenge Name"
-            value={challengeName}
-            style={{ width: 350 }}
-            onChange={(e) => onHandleChange("challenge-name", e.target.value)}
-          />
-        </div>
-        <div className="challenge-list">
-          {examList &&
-            examList.map((e) => {
-              return (
-                <ChallengeTag
-                  key={e._id}
-                  id={e._id}
-                  title={e.title}
-                  tag={e.challenge_type}
-                  onSelect={onSelect}
-                  onDelete={onDeleteExam}
-                />
-              );
-            })}
-        </div>
-        <div className="challenge-list-footer">
-          <Button prefixCls="create-btn-exam" onClick={handleChallengeUpdate}>
-            UPDATE
-          </Button>
-        </div>
-      </div>
       {contextHolder}
     </div>
   );
 };
 
-export default ExamEditing;
+export default ExamItem;

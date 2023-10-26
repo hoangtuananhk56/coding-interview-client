@@ -1,4 +1,4 @@
-.exam {
+.exam-item {
   position: relative;
   width: 100%;
   height: calc(100vh - 70px);
@@ -6,7 +6,6 @@
   font-family: 'Myriadat';
   .left-exam {
     width: 65%;
-    border-right: 1px solid #abc123;
     .back-title {
       display: flex;
       margin-left: 30px;
@@ -45,6 +44,7 @@
       align-items: center;
     }
     .left-exam-body {
+      // height: calc(100% - 60px);
       width: 100%;
       overflow: auto;
     }
