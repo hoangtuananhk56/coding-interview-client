@@ -54,14 +54,8 @@ const ExamItem = () => {
     content: "",
   });
 
-  const onChange = (e) => {
-    console.log(e.target.value, 2222);
-    setExam({ ...exam, type: e.target.value });
-  };
-
   useEffect(() => {
     examAPI.getbyId(id).then((res) => {
-      console.log(res.data, 111);
       setExam({
         id: res.data._id,
         title: res.data.title,
@@ -73,17 +67,25 @@ const ExamItem = () => {
         type: res.data.type,
         content: res.data.content,
       });
+      setCheckbox(res.data.checkbox);
+      setCoding(res.data.coding);
+      setRadio(res.data.radio);
+      setWriting(res.data.writing);
     });
   }, [id]);
 
   const handleUpdateExam = () => {
-    console.log(exam);
-    // examAPI
-    //   .update(exam)
-    //   .then((res) => {
-    //     openNotification();
-    //   })
-    //   .catch((err) => console.log(err));
+    exam.coding = coding;
+    exam.checkbox = checkbox;
+    exam.radio = radio;
+    exam.writing = writing;
+    examAPI
+      .update(id, exam)
+      .then((res) => {
+        openNotification(res.message);
+        navigate(-1);
+      })
+      .catch((err) => console.log(err));
   };
 
   const onHandleChange = (type, value) => {
@@ -95,7 +97,7 @@ const ExamItem = () => {
         setExam({ ...exam, challenge_type: value });
         break;
       case "type":
-        setWriting({ ...exam, type: value });
+        setExam({ ...exam, type: value });
         break;
       case "content":
         setExam({ ...exam, content: value });
@@ -117,10 +119,10 @@ const ExamItem = () => {
     }
   };
   const [api, contextHolder] = notification.useNotification();
-  const openNotification = () => {
+  const openNotification = (notification) => {
     api.open({
       message: "Notification Title",
-      description: "Create a new record successfully",
+      description: notification,
       icon: (
         <SmileOutlined
           style={{
@@ -156,7 +158,7 @@ const ExamItem = () => {
               ChallengeType
             </div>
             <Select
-              defaultValue={exam.challenge_type}
+              value={exam.challenge_type}
               style={{
                 width: 120,
               }}
@@ -180,7 +182,10 @@ const ExamItem = () => {
           <div className="row">
             <div className="title">Type</div>
             <div className="option">
-              <Radio.Group onChange={onChange} value={exam.type}>
+              <Radio.Group
+                onChange={(e) => onHandleChange("type", e.target.value)}
+                value={exam.type}
+              >
                 <Radio key={1} value={"coding"}>
                   Coding
                 </Radio>

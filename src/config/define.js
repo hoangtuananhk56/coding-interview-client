@@ -1,5 +1,5 @@
 var ChallengeType = {
-  SQL: "SQL",
+  SQL: "sql",
   Algorithm: "algorithm",
   Knowledge: "knowledge",
 };

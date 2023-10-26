@@ -17,14 +17,12 @@ const Knowledge = () => {
   const [count, setCount] = useState(0);
   useEffect(() => {
     examAPI.getAll(page, perPage, ChallengeType.Knowledge).then((res) => {
-      console.log(res.data);
       setExams(res.data);
       setCount(res.count);
     });
   }, [page, perPage]);
 
   const onEdit = (item) => {
-    console.log("AAAA", item);
     navigate(`/challenge/exam/${item._id}`);
   };
 
