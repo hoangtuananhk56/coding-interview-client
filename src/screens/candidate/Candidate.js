@@ -8,7 +8,7 @@ import {
   notification,
 } from "antd";
 import React, { useState, useEffect } from "react";
-import { SmileOutlined } from "@ant-design/icons";
+import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 import "./candidate.scss";
 import CandidateItem from "../../components/candidate/CandidateItem";
 import candidateApi from "../../http/candidate";
@@ -49,6 +49,7 @@ const Candidate = () => {
         form.resetFields();
       })
       .catch((err) => {
+        errorNotification("Somethign wrong, can not create a new record");
         //TODO: Show error message
       });
   };
@@ -77,12 +78,30 @@ const Candidate = () => {
       ),
     });
   };
+  const errorNotification = (message) => {
+    api.open({
+      message: "Notification Title",
+      description: message,
+      icon: (
+        <FrownOutlined
+          style={{
+            color: "#f44336",
+          }}
+        />
+      ),
+    });
+  };
   const onSearch = (value) => {
     if (value !== "") {
-      candidateApi.search(value, page, perPage).then((res) => {
-        setCandidates(res.data);
-        setCount(res.count);
-      });
+      candidateApi
+        .search(value, page, perPage)
+        .then((res) => {
+          setCandidates(res.data);
+          setCount(res.count);
+        })
+        .catch((e) => {
+          errorNotification("Somethign wrong, can not find a record");
+        });
     } else {
       candidateApi.getAll(page, perPage).then((res) => {
         setCandidates(res.data);
@@ -124,6 +143,7 @@ const Candidate = () => {
   const handleOnEnterEvent = (e) => {
     if (e.key === "Enter") {
       handleCreateComment();
+    } else {
     }
   };
   return (
@@ -209,9 +229,9 @@ const Candidate = () => {
       >
         <div style={{ maxHeight: 300, overflow: "auto" }}>
           {comments &&
-            comments.map((e) => {
+            comments.map((e, index) => {
               return (
-                <div className="row">
+                <div className="row" key={index}>
                   <p>{e.name} : </p>
                   <p>{e.content}</p>
                 </div>

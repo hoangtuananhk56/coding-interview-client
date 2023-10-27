@@ -17,8 +17,8 @@ const examAPI = {
     const uri = `/exam/exams?page=${page}&perPage=${perPage}&challengeType=${challengeType}`;
     return baseAxios.get(uri);
   },
-  search(title, page, perPage) {
-    const uri = `/exam/search/${title}?page=${page}&perPage=${perPage}`;
+  search(title, type, page, perPage) {
+    const uri = `/exam/search/${title}?type=${type}&page=${page}&perPage=${perPage}`;
     return baseAxios.get(uri);
   },
   runCode(body) {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { LeftOutlined } from "@ant-design/icons";
-import { Button, Input, Pagination } from "antd";
+import { Button, Input, Pagination, notification } from "antd";
 import { useNavigate } from "react-router-dom";
+import { FrownOutlined } from "@ant-design/icons";
 import TestingItem from "../../../components/exam/examItem";
 import examAPI from "../../../http/examAPI";
 import "./sql.scss";
@@ -11,7 +12,6 @@ const SQL = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-  const onSearch = (value) => console.log(value);
   const [exams, setExams] = useState([]);
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -26,6 +26,38 @@ const SQL = () => {
 
   const onDelete = (id) => {
     navigate("/");
+  };
+  const onSearch = (e) => {
+    if (e === "") {
+      examAPI.getAll(page, perPage, ChallengeType.SQL).then((res) => {
+        setExams(res.data);
+        setCount(res.count);
+      });
+    } else {
+      examAPI
+        .search(e, ChallengeType.SQL, page, perPage)
+        .then((res) => {
+          setExams(res.data);
+          setCount(res.count);
+        })
+        .catch(() => {
+          errorNotification("Something wrong, can not search records");
+        });
+    }
+  };
+  const [api, contextHolder] = notification.useNotification();
+  const errorNotification = (message) => {
+    api.open({
+      message: "Notification Title",
+      description: message,
+      icon: (
+        <FrownOutlined
+          style={{
+            color: "#f44336",
+          }}
+        />
+      ),
+    });
   };
 
   return (
@@ -73,6 +105,7 @@ const SQL = () => {
             );
           })}
       </div>
+      {contextHolder}
       <Pagination
         className="custom-pagination"
         total={count}
