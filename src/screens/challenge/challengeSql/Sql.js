@@ -20,8 +20,8 @@ const SQL = () => {
       setCount(res.count);
     });
   }, [page, perPage]);
-  const onEdit = (id) => {
-    navigate(`test/exam/${id}`);
+  const onEdit = (item) => {
+    navigate(`/challenge/exam/${item._id}`);
   };
 
   const onDelete = (id) => {
@@ -51,14 +51,26 @@ const SQL = () => {
                 width: 200,
               }}
             />
-            <Button prefixCls="create-btn">CREATE</Button>
+            <Button
+              prefixCls="create-btn"
+              onClick={() => navigate(`/challenge/examcreate/sql`)}
+            >
+              CREATE
+            </Button>
           </div>
         </div>
       </div>
       <div className="my-table">
         {exams &&
-          exams.map((e) => {
-            return <TestingItem item={e} onEdit={onEdit} onDelete={onDelete} />;
+          exams.map((e, index) => {
+            return (
+              <TestingItem
+                key={index}
+                item={e}
+                onEdit={onEdit}
+                onDelete={onDelete}
+              />
+            );
           })}
       </div>
       <Pagination

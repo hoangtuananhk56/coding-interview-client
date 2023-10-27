@@ -1,24 +1,18 @@
 import { LeftOutlined, SmileOutlined } from "@ant-design/icons";
-import { Button, Input, notification, Radio, Select } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Input, Radio, Select, notification } from "antd";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ChallengeTag from "../../../components/testing/challengeTag";
 import CheckboxItem from "../../../components/testing/CheckboxItem";
 import CodingItem from "../../../components/testing/CodingItem";
 import RadioItem from "../../../components/testing/RadioItem";
-import challengeAPI from "../../../http/challengeAPI";
 import examAPI from "../../../http/examAPI";
-import "./exam.scss";
-const { Search, TextArea } = Input;
+import "./exam_creation.scss";
+import { useEffect } from "react";
+const { TextArea } = Input;
 
-const ExamEditing = (props) => {
+const ExamCreation = (props) => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  // const [value, setValue] = useState('coding');
-  const [challengeName, setChallengeName] = useState("");
-  const [, setChallenge] = useState();
-  const [examList, setExamList] = useState([]);
-
+  const { type } = useParams();
   const [coding, setCoding] = useState({
     input: "",
     output: "",
@@ -32,7 +26,7 @@ const ExamEditing = (props) => {
 
   const [checkbox, setCheckbox] = useState([
     {
-      ischeck: true,
+      ischeck: false,
       option: "",
     },
   ]);
@@ -47,10 +41,11 @@ const ExamEditing = (props) => {
   const [writing, setWriting] = useState({
     result: "",
   });
+
   const [exam, setExam] = useState({
     id: "",
     title: "",
-    challenge_type: "sql",
+    challenge_type: type,
     checkbox: checkbox,
     coding: coding,
     radio: radio,
@@ -59,87 +54,13 @@ const ExamEditing = (props) => {
     content: "",
   });
 
-  useEffect(() => {
-    challengeAPI
-      .getbyId(id)
-      .then((res) => {
-        setChallenge(res.data);
-        setChallengeName(res.data.name);
-        if (res.data.examids.length !== 0) {
-          res.data.examids.forEach((item) => {
-            examAPI.getbyId(item).then((res1) => {
-              // debugger
-              setExam({
-                id: res1.data._id,
-                title: res1.data.title,
-                challenge_type: res1.data.challenge_type,
-                checkbox: res1.data.checkbox,
-                coding: res1.data.coding,
-                radio: res1.data.radio,
-                writing: res1.data.writing,
-                type: res1.data.type,
-                content: res1.data.content,
-              });
-              setCheckbox(res1.data.checkbox);
-              setCoding(res1.data.coding);
-              setRadio(res1.data.radio);
-              setWriting(res1.data.writing);
-              let arr = examList;
-              //Check exist item
-              let index = arr.findIndex((e) => {
-                return e._id === res1.data._id;
-              });
-
-              if (index === -1) {
-                arr.push(res1.data);
-                setExamList(arr);
-                setCheckbox(res1.data.checkbox);
-                setCoding(res1.data.coding);
-                setRadio(res1.data.radio);
-                setWriting(res1.data.writing);
-              }
-            });
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id, examList]);
-
-  const onSearch = () => {
-    console.log("onSearch");
-  };
-
-  const handleChallengeUpdate = () => {
-    let examIds = [];
-    examList.forEach((e) => {
-      examIds.push(e._id);
-    });
-    let body = {
-      name: challengeName,
-      examids: examIds,
-    };
-    challengeAPI
-      .update(id, body)
-      .then(() => {
-        openNotification();
-        navigate("/test");
-      })
-      .catch((err) => {
-        navigate("/test");
-        console.log(err);
-      });
-  };
-
-  const handleUpdateExam = () => {
+  const handleCreateExam = () => {
     exam.coding = coding;
     exam.checkbox = checkbox;
     exam.radio = radio;
     exam.writing = writing;
-    console.log(exam, 111);
     examAPI
-      .update(exam.id, exam)
+      .create(exam)
       .then((res) => {
         openNotification(res.message);
         navigate(-1);
@@ -151,9 +72,6 @@ const ExamEditing = (props) => {
     switch (type) {
       case "title":
         setExam({ ...exam, title: value });
-        break;
-      case "challenge-type":
-        setExam({ ...exam, challenge_type: value });
         break;
       case "type":
         setExam({ ...exam, type: value });
@@ -192,29 +110,18 @@ const ExamEditing = (props) => {
     });
   };
 
-  const onDeleteExam = (id) => {
-    let arr = examList;
-    arr = arr.filter((item) => item._id !== id);
-    setExamList(arr);
-  };
-  const onSelect = (id) => {
-    let e = examList.find((e) => e._id === id);
-    setExam(e);
-  };
-  if (!exam) return <>Loading!</>;
   return (
-    <div className="exam">
+    <div className="exam-creation">
       <div className="left-exam">
         <div className="left-exam-body">
           <div
             className="back-title"
-            title="Back to prepage"
             onClick={() => {
-              navigate("/test");
+              navigate(-1);
             }}
           >
             <LeftOutlined style={{ fontSize: 18 }} />
-            Testing
+            Exam content
           </div>
           <div className="row">
             <div className="title">Title</div>
@@ -224,15 +131,15 @@ const ExamEditing = (props) => {
               value={exam.title}
               onChange={(e) => onHandleChange("title", e.target.value)}
             />
-            <div className="title" style={{ width: 120 }}>
-              ChallengeType
+            <div className="title" style={{ width: 150 }}>
+              ChallengeType : {exam.challenge_type}
             </div>
-            <Select
+            {/* <Select
               value={exam.challenge_type}
               style={{
                 width: 120,
               }}
-              onChange={(e) => onHandleChange("challenge-type", e)}
+              onChange={(e) => onHandleChange("challenge-name", e)}
               options={[
                 {
                   value: "sql",
@@ -247,7 +154,7 @@ const ExamEditing = (props) => {
                   label: "Knowledge",
                 },
               ]}
-            />
+            /> */}
           </div>
           <div className="row">
             <div className="title">Type</div>
@@ -297,11 +204,7 @@ const ExamEditing = (props) => {
               <div className="input-2">
                 <TextArea
                   rows={4}
-                  value={
-                    exam.writing !== undefined
-                      ? exam.writing.result
-                      : writing.result
-                  }
+                  value={writing.result}
                   onChange={(e) => onHandleChange("writing", e.target.value)}
                 />
               </div>
@@ -309,58 +212,15 @@ const ExamEditing = (props) => {
           )}
         </div>
         <div className="left-exam-footer">
-          <Button prefixCls="create-btn-exam" onClick={handleUpdateExam}>
-            UPDATE
+          <Button prefixCls="create-btn-exam" onClick={handleCreateExam}>
+            CREATE
           </Button>
         </div>
       </div>
 
-      <div className="right-exam">
-        <div className="header-list">
-          List
-          <Search
-            className="search-input"
-            placeholder="Enter exam"
-            onSearch={onSearch}
-            style={{
-              width: 350,
-            }}
-          />
-        </div>
-        <div className="header-list">
-          <span style={{ fontSize: 14 }}>Name</span>
-          <Input
-            className="input-1"
-            placeholder="Challenge Name"
-            value={challengeName}
-            style={{ width: 350 }}
-            onChange={(e) => onHandleChange("challenge-name", e.target.value)}
-          />
-        </div>
-        <div className="challenge-list">
-          {examList &&
-            examList.map((e) => {
-              return (
-                <ChallengeTag
-                  key={e._id}
-                  id={e._id}
-                  title={e.title}
-                  tag={e.challenge_type}
-                  onSelect={onSelect}
-                  onDelete={onDeleteExam}
-                />
-              );
-            })}
-        </div>
-        <div className="challenge-list-footer">
-          <Button prefixCls="create-btn-exam" onClick={handleChallengeUpdate}>
-            UPDATE
-          </Button>
-        </div>
-      </div>
       {contextHolder}
     </div>
   );
 };
 
-export default ExamEditing;
+export default ExamCreation;

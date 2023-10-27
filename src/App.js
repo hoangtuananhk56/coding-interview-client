@@ -18,6 +18,7 @@ import Challengelist from "./screens/candidatetesting/challengelist/Challengelis
 import CandidateTesting from "./screens/candidatetesting/testing/CandidateTesting";
 import InterviewTesting from "./screens/candidatetesting/InterviewTesting";
 import ExamItem from "./screens/challenge/examitem/ExamItem";
+import ExamCreation from "./screens/challenge/examcreation/ExamCreation";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="challenge/algorithm" element={<Algorithm />} />
           <Route path="challenge/knowledge" element={<Knowledge />} />
           <Route path="challenge/exam/:id" element={<ExamItem />} />
+          <Route path="challenge/examcreate/:type" element={<ExamCreation />} />
           <Route path="test" element={<Testing />} />
           <Route path="test/exam" element={<Exam />} />
           <Route path="test/exam/:id" element={<ExamEditing />} />

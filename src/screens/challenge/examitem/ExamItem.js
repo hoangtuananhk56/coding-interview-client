@@ -227,6 +227,7 @@ const ExamItem = () => {
               <div className="input-2">
                 <TextArea
                   rows={4}
+                  value={writing.result}
                   onChange={(e) => onHandleChange("writing", e.target.value)}
                 />
               </div>

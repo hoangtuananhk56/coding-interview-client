@@ -96,7 +96,6 @@ const Candidate = () => {
     setCurrentCandidateId(id);
   };
   const handleCreateComment = () => {
-    console.log(comment, 111);
     if (comment !== undefined) {
       commentApi.create(comment).then((res) => {
         openNotification();
@@ -122,6 +121,11 @@ const Candidate = () => {
     setIsModalOpenCreation(true);
   };
   const handleChange = () => console.log("handleChange");
+  const handleOnEnterEvent = (e) => {
+    if (e.key === "Enter") {
+      handleCreateComment();
+    }
+  };
   return (
     <div className="home">
       <div className="title-1">
@@ -156,6 +160,7 @@ const Candidate = () => {
           candidates.map((e, index) => {
             return (
               <CandidateItem
+                key={index}
                 id={e._id}
                 index={index}
                 name={e.name}
@@ -223,6 +228,7 @@ const Candidate = () => {
               name: localStorage.getItem("name"),
             })
           }
+          onKeyDown={(e) => handleOnEnterEvent(e)}
           value={comment.content}
         />
       </Modal>
