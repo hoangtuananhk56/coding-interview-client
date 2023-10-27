@@ -149,10 +149,12 @@ const Exam = () => {
   const onSelect = (id) => {
     console.log(id);
     let e = examList.find((e) => e._id === id);
-    console.log(e);
 
     setExam(e);
+    setWriting(e.writing);
+    setCheckbox(e.checkbox);
     setCoding(e.coding);
+    setRadio(e.radio);
   };
 
   return (
@@ -244,11 +246,7 @@ const Exam = () => {
               <div className="input-2">
                 <TextArea
                   rows={4}
-                  value={
-                    exam.writing !== undefined
-                      ? exam.writing.result
-                      : writing.result
-                  }
+                  value={writing.result}
                   onChange={(e) => onHandleChange("writing", e.target.value)}
                 />
               </div>

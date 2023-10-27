@@ -68,22 +68,6 @@ const ExamEditing = (props) => {
         if (res.data.examids.length !== 0) {
           res.data.examids.forEach((item) => {
             examAPI.getbyId(item).then((res1) => {
-              // debugger
-              setExam({
-                id: res1.data._id,
-                title: res1.data.title,
-                challenge_type: res1.data.challenge_type,
-                checkbox: res1.data.checkbox,
-                coding: res1.data.coding,
-                radio: res1.data.radio,
-                writing: res1.data.writing,
-                type: res1.data.type,
-                content: res1.data.content,
-              });
-              setCheckbox(res1.data.checkbox);
-              setCoding(res1.data.coding);
-              setRadio(res1.data.radio);
-              setWriting(res1.data.writing);
               let arr = examList;
               //Check exist item
               let index = arr.findIndex((e) => {
@@ -92,6 +76,17 @@ const ExamEditing = (props) => {
 
               if (index === -1) {
                 arr.push(res1.data);
+                setExam({
+                  id: res1.data._id,
+                  title: res1.data.title,
+                  challenge_type: res1.data.challenge_type,
+                  checkbox: res1.data.checkbox,
+                  coding: res1.data.coding,
+                  radio: res1.data.radio,
+                  writing: res1.data.writing,
+                  type: res1.data.type,
+                  content: res1.data.content,
+                });
                 setExamList(arr);
                 setCheckbox(res1.data.checkbox);
                 setCoding(res1.data.coding);
@@ -139,7 +134,7 @@ const ExamEditing = (props) => {
     exam.writing = writing;
     console.log(exam, 111);
     examAPI
-      .update(exam.id, exam)
+      .update(exam._id, exam)
       .then((res) => {
         openNotification(res.message);
         navigate(-1);
@@ -199,7 +194,13 @@ const ExamEditing = (props) => {
   };
   const onSelect = (id) => {
     let e = examList.find((e) => e._id === id);
+    console.log(e);
     setExam(e);
+    setExam(e);
+    setWriting(e.writing);
+    setCheckbox(e.checkbox);
+    setCoding(e.coding);
+    setRadio(e.radio);
   };
   if (!exam) return <>Loading!</>;
   return (
@@ -297,11 +298,7 @@ const ExamEditing = (props) => {
               <div className="input-2">
                 <TextArea
                   rows={4}
-                  value={
-                    exam.writing !== undefined
-                      ? exam.writing.result
-                      : writing.result
-                  }
+                  value={writing === undefined ? "" : writing.result}
                   onChange={(e) => onHandleChange("writing", e.target.value)}
                 />
               </div>
