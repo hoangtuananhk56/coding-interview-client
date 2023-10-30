@@ -8,13 +8,45 @@ import CodingItem from "../../../components/testing/CodingItem";
 import RadioItem from "../../../components/testing/RadioItem";
 import challengeAPI from "../../../http/challengeAPI";
 import examAPI from "../../../http/examAPI";
+import { AutoComplete } from "antd";
+
 import "./exam.scss";
-const { Search, TextArea } = Input;
+const { TextArea } = Input;
 
 const ExamEditing = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
-  // const [value, setValue] = useState('coding');
+  const [value, setValue] = useState("");
+  const [examOnSearching, setExamOnSearching] = useState([]);
+
+  const onChange = (data) => {
+    console.log(data);
+    setValue(data);
+    getPanelValue(data).then((res) => {
+      setAnotherOptions(res);
+    });
+  };
+
+  const [anotherOptions, setAnotherOptions] = useState([]);
+  const getPanelValue = async (searchText) =>
+    !searchText ? [] : (await dataArr(searchText)) || [];
+  const dataArr = async (text) => {
+    try {
+      let data = (await examAPI.searchOnList(text, 1, 5)).data;
+      let arr = [];
+      data.forEach((e) => {
+        let item = {
+          value: e.title,
+        };
+        arr.push(item);
+      });
+      setExamOnSearching(data);
+      return arr;
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  };
   const [challengeName, setChallengeName] = useState("");
   const [, setChallenge] = useState();
   const [examList, setExamList] = useState([]);
@@ -142,6 +174,15 @@ const ExamEditing = (props) => {
       .catch((err) => console.log(err));
   };
 
+  const onSelectExam = (data) => {
+    let item = examOnSearching.find((e) => e.title === data);
+    if (item !== undefined) {
+      let arr = examList;
+      arr.push(item);
+      setExamList(arr);
+    }
+  };
+
   const onHandleChange = (type, value) => {
     switch (type) {
       case "title":
@@ -149,6 +190,9 @@ const ExamEditing = (props) => {
         break;
       case "challenge-type":
         setExam({ ...exam, challenge_type: value });
+        break;
+      case "challenge-name":
+        setChallengeName(value);
         break;
       case "type":
         setExam({ ...exam, type: value });
@@ -314,24 +358,26 @@ const ExamEditing = (props) => {
 
       <div className="right-exam">
         <div className="header-list">
-          List
-          <Search
-            className="search-input"
-            placeholder="Enter exam"
-            onSearch={onSearch}
-            style={{
-              width: 350,
-            }}
-          />
-        </div>
-        <div className="header-list">
-          <span style={{ fontSize: 14 }}>Name</span>
+          <span style={{ fontSize: 16 }}>Challenge</span>
           <Input
             className="input-1"
             placeholder="Challenge Name"
             value={challengeName}
-            style={{ width: 350 }}
+            style={{ width: 300 }}
             onChange={(e) => onHandleChange("challenge-name", e.target.value)}
+          />
+        </div>
+        <div className="header-list">
+          <span style={{ fontSize: 14 }}>Name</span>
+          <AutoComplete
+            value={value}
+            options={anotherOptions}
+            style={{
+              width: 300,
+            }}
+            onSelect={onSelectExam}
+            onChange={onChange}
+            placeholder="enter a exam"
           />
         </div>
         <div className="challenge-list">

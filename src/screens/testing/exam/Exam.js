@@ -8,12 +8,27 @@ import CheckboxItem from "../../../components/testing/CheckboxItem";
 import CodingItem from "../../../components/testing/CodingItem";
 import RadioItem from "../../../components/testing/RadioItem";
 import examAPI from "../../../http/examAPI";
+import { AutoComplete } from "antd";
 import "./exam.scss";
 import challengeAPI from "../../../http/challengeAPI";
-const { Search, TextArea } = Input;
-
+const { TextArea } = Input;
+const mockVal = (str, repeat = 1) => ({
+  value: str.repeat(repeat),
+});
 const Exam = () => {
   const navigate = useNavigate();
+  const [value, setValue] = useState("");
+  const [anotherOptions, setAnotherOptions] = useState([]);
+  const getPanelValue = (searchText) =>
+    !searchText
+      ? []
+      : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
+  const onSelectExam = (data) => {
+    console.log("onSelect", data);
+  };
+  const onChange = (data) => {
+    setValue(data);
+  };
   const [challengeName, setChallengeName] = useState("");
   const [examList, setExamList] = useState([]);
 
@@ -61,14 +76,14 @@ const Exam = () => {
     console.log("onSearch");
   };
 
-  const handleChallengeTest = () => {
-    let examId = [];
+  const handleChallengeCreation = () => {
+    let examIds = [];
     examList.forEach((e) => {
-      examId.push(e._id);
+      examIds.push(e._id);
     });
     let body = {
       name: challengeName,
-      examids: examId,
+      examids: examIds,
     };
     challengeAPI
       .create(body)
@@ -101,8 +116,11 @@ const Exam = () => {
       case "title":
         setExam({ ...exam, title: value });
         break;
-      case "challenge-name":
+      case "challenge-type":
         setExam({ ...exam, challenge_type: value });
+        break;
+      case "challenge-name":
+        setChallengeName(value);
         break;
       case "type":
         setExam({ ...exam, type: value });
@@ -263,13 +281,24 @@ const Exam = () => {
       <div className="right-exam">
         <div className="header-list">
           List
-          <Search
+          {/* <Search
             className="search-input"
             placeholder="Enter exam"
             onSearch={onSearch}
             style={{
               width: 350,
             }}
+          /> */}
+          <AutoComplete
+            value={value}
+            options={anotherOptions}
+            style={{
+              width: 350,
+            }}
+            onSelect={onSelectExam}
+            onSearch={(text) => setAnotherOptions(getPanelValue(text))}
+            onChange={onChange}
+            placeholder="enter a exam"
           />
         </div>
         <div className="header-list">
@@ -297,7 +326,7 @@ const Exam = () => {
             })}
         </div>
         <div className="challenge-list-footer">
-          <Button prefixCls="create-btn-exam" onClick={handleChallengeTest}>
+          <Button prefixCls="create-btn-exam" onClick={handleChallengeCreation}>
             CREATE
           </Button>
         </div>
