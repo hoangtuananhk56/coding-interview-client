@@ -13,7 +13,7 @@ import { AutoComplete } from "antd";
 import "./exam.scss";
 const { TextArea } = Input;
 
-const ExamEditing = (props) => {
+const ExamEditing = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [value, setValue] = useState("");
@@ -134,10 +134,6 @@ const ExamEditing = (props) => {
       });
   }, [id, examList]);
 
-  const onSearch = () => {
-    console.log("onSearch");
-  };
-
   const handleChallengeUpdate = () => {
     let examIds = [];
     examList.forEach((e) => {
@@ -238,8 +234,6 @@ const ExamEditing = (props) => {
   };
   const onSelect = (id) => {
     let e = examList.find((e) => e._id === id);
-    console.log(e);
-    setExam(e);
     setExam(e);
     setWriting(e.writing);
     setCheckbox(e.checkbox);
@@ -382,10 +376,10 @@ const ExamEditing = (props) => {
         </div>
         <div className="challenge-list">
           {examList &&
-            examList.map((e) => {
+            examList.map((e, index) => {
               return (
                 <ChallengeTag
-                  key={e._id}
+                  key={index}
                   id={e._id}
                   title={e.title}
                   tag={e.challenge_type}

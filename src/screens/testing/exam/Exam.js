@@ -12,23 +12,40 @@ import { AutoComplete } from "antd";
 import "./exam.scss";
 import challengeAPI from "../../../http/challengeAPI";
 const { TextArea } = Input;
-const mockVal = (str, repeat = 1) => ({
-  value: str.repeat(repeat),
-});
+
 const Exam = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState("");
-  const [anotherOptions, setAnotherOptions] = useState([]);
-  const getPanelValue = (searchText) =>
-    !searchText
-      ? []
-      : [mockVal(searchText), mockVal(searchText, 2), mockVal(searchText, 3)];
-  const onSelectExam = (data) => {
-    console.log("onSelect", data);
-  };
+  const [examOnSearching, setExamOnSearching] = useState([]);
+
   const onChange = (data) => {
+    console.log(data);
     setValue(data);
+    getPanelValue(data).then((res) => {
+      setAnotherOptions(res);
+    });
   };
+  const [anotherOptions, setAnotherOptions] = useState([]);
+  const getPanelValue = async (searchText) =>
+    !searchText ? [] : (await dataArr(searchText)) || [];
+  const dataArr = async (text) => {
+    try {
+      let data = (await examAPI.searchOnList(text, 1, 5)).data;
+      let arr = [];
+      data.forEach((e) => {
+        let item = {
+          value: e.title,
+        };
+        arr.push(item);
+      });
+      setExamOnSearching(data);
+      return arr;
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  };
+
   const [challengeName, setChallengeName] = useState("");
   const [examList, setExamList] = useState([]);
 
@@ -72,9 +89,6 @@ const Exam = () => {
     type: "coding",
     content: "",
   });
-  const onSearch = () => {
-    console.log("onSearch");
-  };
 
   const handleChallengeCreation = () => {
     let examIds = [];
@@ -109,6 +123,15 @@ const Exam = () => {
         navigate(-1);
       })
       .catch((err) => console.log(err));
+  };
+
+  const onSelectExam = (data) => {
+    let item = examOnSearching.find((e) => e.title === data);
+    if (item !== undefined) {
+      let arr = examList;
+      arr.push(item);
+      setExamList(arr);
+    }
   };
 
   const onHandleChange = (type, value) => {
@@ -179,7 +202,13 @@ const Exam = () => {
     <div className="exam">
       <div className="left-exam">
         <div className="left-exam-body">
-          <div className="back-title">
+          <div
+            className="back-title"
+            title="Back to prepage"
+            onClick={() => {
+              navigate("/test");
+            }}
+          >
             <LeftOutlined style={{ fontSize: 18 }} />
             Testing
           </div>
@@ -280,42 +309,34 @@ const Exam = () => {
 
       <div className="right-exam">
         <div className="header-list">
-          List
-          {/* <Search
-            className="search-input"
-            placeholder="Enter exam"
-            onSearch={onSearch}
-            style={{
-              width: 350,
-            }}
-          /> */}
-          <AutoComplete
-            value={value}
-            options={anotherOptions}
-            style={{
-              width: 350,
-            }}
-            onSelect={onSelectExam}
-            onSearch={(text) => setAnotherOptions(getPanelValue(text))}
-            onChange={onChange}
-            placeholder="enter a exam"
+          <span style={{ fontSize: 16 }}>Challenge</span>
+          <Input
+            className="input-1"
+            placeholder="Challenge Name"
+            value={challengeName}
+            style={{ width: 300 }}
+            onChange={(e) => onHandleChange("challenge-name", e.target.value)}
           />
         </div>
         <div className="header-list">
           <span style={{ fontSize: 14 }}>Name</span>
-          <Input
-            className="input-1"
-            placeholder="Challenge Name"
-            style={{ width: 350 }}
-            onChange={(e) => onHandleChange("challenge-name", e.target.value)}
+          <AutoComplete
+            value={value}
+            options={anotherOptions}
+            style={{
+              width: 300,
+            }}
+            onSelect={onSelectExam}
+            onChange={onChange}
+            placeholder="enter a exam"
           />
         </div>
         <div className="challenge-list">
           {examList &&
-            examList.map((e) => {
+            examList.map((e, index) => {
               return (
                 <ChallengeTag
-                  key={e._id}
+                  key={index}
                   id={e._id}
                   title={e.title}
                   tag={e.challenge_type}
