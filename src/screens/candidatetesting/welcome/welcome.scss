@@ -32,7 +32,7 @@
   .welcome-page-right{
     width: 60vw;
     height: 100vh;
-    background-color: #A5D6A7;
+    background-color: #81c784;
     position: relative;
     color: #343a32;
     .welcome-page-right-body {
@@ -47,6 +47,7 @@
         font-size: 18px;
         height: 30px;
         margin-top: 10px;
+        max-width: 95%;
       }
     }
     .welcome-start-btn {
@@ -58,6 +59,7 @@
           background-color: #00a808;
           border: 1px solid white;
           color: white;
+          font-size: 15px;
         }
       }
     }

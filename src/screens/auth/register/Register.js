@@ -1,14 +1,14 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import './register.scss';
-import homeright from '../../../assets/images/homeright.jpg';
-import logo from '../../../assets/images/logo.png';
-import authApi from '../../../http/authAPI'
+import "./register.scss";
+import homeright from "../../../assets/images/homeright.jpg";
+import logo from "../../../assets/images/logo3x.png";
+import authApi from "../../../http/authAPI";
 const onFinish = (values) => {
-  authApi.userRegister(values)
+  authApi.userRegister(values);
 };
 const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
+  console.log("Failed:", errorInfo);
 };
 const Register = () => {
   const navigate = useNavigate();
@@ -17,11 +17,9 @@ const Register = () => {
       <div className="register">
         <div className="register-form">
           <div className="register-logo">
-            <img src={logo} alt="logo"/>
+            <img src={logo} alt="logo" />
           </div>
-          <div className="register-title">
-            WELCOME TO BAST VIETNAM
-          </div>
+          <div className="register-title">WELCOME TO BAST VIETNAM</div>
           <div className="input-form">
             <Form
               name="basic"
@@ -47,7 +45,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your username!',
+                    message: "Please input your username!",
                   },
                 ]}
               >
@@ -60,7 +58,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your password!',
+                    message: "Please input your password!",
                   },
                 ]}
               >
@@ -72,7 +70,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your re-password!',
+                    message: "Please input your re-password!",
                   },
                 ]}
               >
@@ -88,7 +86,11 @@ const Register = () => {
                 <Button type="primary" htmlType="submit">
                   Register
                 </Button>
-                <Button type="default" style={{ marginLeft: 10 }} onClick={() => navigate('/auth/login')}>
+                <Button
+                  type="default"
+                  style={{ marginLeft: 10 }}
+                  onClick={() => navigate("/auth/login")}
+                >
                   Cancle
                 </Button>
               </Form.Item>
@@ -97,12 +99,11 @@ const Register = () => {
         </div>
 
         <div className="right-home">
-          <img src={homeright} alt="home-rght"/>
+          <img src={homeright} alt="home-rght" />
         </div>
-
       </div>
     </>
-  )
+  );
 };
 
 export default Register;

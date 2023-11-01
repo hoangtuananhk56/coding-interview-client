@@ -1,27 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Form, Input } from 'antd';
-import './login.scss';
-import logo from '../../../assets/images/logo.png'
-import homeright from '../../../assets/images/homeright.jpg'
-import authApi from '../../../http/authAPI'
+import { Button, Form, Input } from "antd";
+import "./login.scss";
+import logo from "../../../assets/images/logo3x.png";
+import homeright from "../../../assets/images/homeright.jpg";
+import authApi from "../../../http/authAPI";
 import { useState } from "react";
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [message, setMessage] = useState();
   const onLogin = async (values) => {
-    await authApi.userLogin(values)
-      .then(res => {
+    await authApi
+      .userLogin(values)
+      .then((res) => {
         //Save localstorage accessToken
-        localStorage.setItem('accessToken', res.accessToken)
-        localStorage.setItem('name', res.name)
-        navigate("/")
-      }).catch(err => {
-        setMessage(err.response.data.message)
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("name", res.name);
+        navigate("/");
       })
+      .catch((err) => {
+        setMessage(err.response.data.message);
+      });
   };
   const onLoginFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
   return (
     <>
@@ -30,9 +32,7 @@ const Login = () => {
           <div className="login-logo">
             <img src={logo} alt="logo" />
           </div>
-          <div className="login-title">
-            WELCOME TO BAST VIETNAM
-          </div>
+          <div className="login-title">WELCOME TO BAST VIETNAM</div>
           <div className="input-form">
             <Form
               name="basic"
@@ -58,7 +58,7 @@ const Login = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your username!',
+                    message: "Please input your username!",
                   },
                 ]}
               >
@@ -71,23 +71,33 @@ const Login = () => {
                 rules={[
                   {
                     required: true,
-                    message: 'Please input your password!',
+                    message: "Please input your password!",
                   },
                 ]}
               >
                 <Input.Password />
               </Form.Item>
-              <p style={{ marginLeft: 170, color: 'red' }}>{message}</p>
+              <p style={{ marginLeft: 170, color: "red" }}>{message}</p>
               <Form.Item
                 wrapperCol={{
                   offset: 8,
                   span: 16,
                 }}
               >
-                <Button htmlType="submit" style={{ marginRight: 10, backgroundColor: '#4caf50', color: 'white' }}>
+                <Button
+                  htmlType="submit"
+                  style={{
+                    marginRight: 10,
+                    backgroundColor: "#4caf50",
+                    color: "white",
+                  }}
+                >
                   Submit
                 </Button>
-                <Button style={{ backgroundColor: '#2196f3', color: 'white' }} onClick={() => navigate("/auth/register")}>
+                <Button
+                  style={{ backgroundColor: "#2196f3", color: "white" }}
+                  onClick={() => navigate("/auth/register")}
+                >
                   Register
                 </Button>
               </Form.Item>
@@ -100,7 +110,7 @@ const Login = () => {
         </div>
       </div>
     </>
-  )
+  );
 };
 
 export default Login;

@@ -1,7 +1,7 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./candidatetesting.scss";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo3x.png";
 import challengeAPI from "../../http/challengeAPI";
 import examAPI from "../../http/examAPI";
 
